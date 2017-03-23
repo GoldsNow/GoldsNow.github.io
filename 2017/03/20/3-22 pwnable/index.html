@@ -3,15 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>about | GoldsNow</title>
+  <title>0ctf writeup | GoldsNow</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="about">
-<meta property="og:url" content="https://GoldsNow.github.io/about/index.html">
+  <meta name="description" content="0ctf是国际赛，这次参加比赛只做出了一道python逆向和两道密码题，有点小小忧伤">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0ctf writeup">
+<meta property="og:url" content="https://GoldsNow.github.io/2017/03/20/3-22 pwnable/index.html">
 <meta property="og:site_name" content="GoldsNow">
-<meta property="og:updated_time" content="2017-03-23T03:09:51.075Z">
+<meta property="og:description" content="0ctf是国际赛，这次参加比赛只做出了一道python逆向和两道密码题，有点小小忧伤">
+<meta property="og:updated_time" content="2017-03-23T14:59:00.773Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="about">
+<meta name="twitter:title" content="0ctf writeup">
+<meta name="twitter:description" content="0ctf是国际赛，这次参加比赛只做出了一道python逆向和两道密码题，有点小小忧伤">
   
     <link rel="alternative" href="/atom.xml" title="GoldsNow" type="application/atom+xml">
   
@@ -37,7 +40,7 @@
           fancybox: true,
           animate: true,
           isHome: false,
-          isPost: false,
+          isPost: true,
           isArchive: false,
           isTag: false,
           isCategory: false,
@@ -209,11 +212,11 @@
         </header>                
     </div>
 </nav>
-      <div class="body-wrap"><article id="page-undefined" class="article article-type-page" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-3-22 pwnable" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/about/index.html" class="article-date">
-      <time datetime="2017-03-23T03:09:51.000Z" itemprop="datePublished">2017-03-23</time>
+      <a href="/2017/03/20/3-22 pwnable/" class="article-date">
+      <time datetime="2017-03-19T16:00:00.000Z" itemprop="datePublished">2017-03-20</time>
 </a>
     </div>
   
@@ -226,7 +229,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      about
+      0ctf writeup
     </h1>
   
 
@@ -234,49 +237,22 @@
       
       <div class="article-info article-info-post">
         
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/Writeup/">Writeup</a>
+    </div>
+
 
         
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pwnable-kr/">pwnable.kr</a></li></ul>
+    </div>
+
         <div class="clearfix"></div>
       </div>
       
     
     <div class="article-entry" itemprop="articleBody">
       
-          
-              <style>
-    .article-meta {
-        display: none;
-    }
-    #container .article .article-title {
-        padding-right: 0;
-    }
-    .article-header {
-        padding: 0;
-        padding-top: 26px;
-        border-left: none;
-        text-align: center;
-    }
-    .article-header:hover {
-        border-left: none;
-    }
-    .article-title {
-        font-size: 1.6em
-    }
-    .article-meta {
-        display: none;
-    }
-    .article-entry hr {
-        margin: 0;
-    }
-    #container .article-info-post.article-info {
-      display: none;
-      }
-    #container .article .article-title {
-    padding: 0;
-    }
-</style>
-
-
           
         
       
@@ -286,10 +262,76 @@
   </div>
   
     
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/03/20/3-22 pwnable/">0ctf writeup</a></p>
+        <p><span>文章作者:</span><a href="/" title="访问 GoldsNow 的个人博客">GoldsNow</a></p>
+        <p><span>发布时间:</span>2017年03月20日 - 00时00分</p>
+        <p><span>最后更新:</span>2017年03月23日 - 22时59分</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/03/20/3-22 pwnable/" title="0ctf writeup">https://GoldsNow.github.io/2017/03/20/3-22 pwnable/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://GoldsNow.github.io/2017/03/20/3-22 pwnable/　　作者: GoldsNow" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script src="/js/clipboard.min.js"></script>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/" title="中国大陆 (CC BY-NC-SA 3.0 CN)" target = "_blank">"署名-非商用-相同方式共享 3.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
 
+
+
+<nav id="article-nav">
+  
+    <a href="/2017/03/20/writeup/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          0ctf writeup
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/12/03/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Hello World</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
 
   
 </article>
+
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    
+</div>
+<input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+<script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script>
+    var valueHide = "隐藏目录";
+    var valueShow = "显示目录";
+
+    if ($(".left-col").is(":hidden")) {
+        $("#tocButton").attr("value", valueShow);
+    }
+    $("#tocButton").click(function() {
+        if ($("#toc").is(":hidden")) {
+            $("#tocButton").attr("value", valueHide);
+            $("#toc").slideDown(320);
+        }
+        else {
+            $("#tocButton").attr("value", valueShow);
+            $("#toc").slideUp(350);
+        }
+    })
+    if ($(".toc").length < 1) {
+        $("#toc, #tocButton").hide();
+    }
+</script>
+
+
 
 
 
@@ -316,6 +358,39 @@
     
 
 
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2017/03/20/writeup/" title="上一篇: 0ctf writeup">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        
+            <a href="/2015/12/03/hello-world/" title="下一篇: Hello World">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/writeup/">0ctf writeup</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/3-22 pwnable/">0ctf writeup</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/12/03/hello-world/">Hello World</a></li></ul>
+    <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+    <script>
+        $(".post-list").addClass("toc-article");
+        $(".post-list-item a").attr("target","_blank");
+        $("#post-nav-button > a:nth-child(2)").click(function() {
+            $(".fa-bars, .fa-times").toggle();
+            $(".post-list").toggle(300);
+            if ($(".toc").length > 0) {
+                $("#toc, #tocButton").toggle(200, function() {
+                    if ($(".switch-area").is(":visible")) {
+                        $("#tocButton").attr("value", valueHide);
+                        }
+                    })
+            }
+            else {
+            }
+        })
+    </script>
 
 
 
