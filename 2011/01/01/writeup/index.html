@@ -14,16 +14,17 @@
 <meta name="author" content="GoldsNow" />
 
 
-    
-    
 
-
-<meta property="og:type" content="website">
-<meta property="og:title" content="GoldsNow">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="Welcome to Hexo! This is your very first post.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0ctf writeup">
+<meta property="og:url" content="http://yoursite.com/2011/01/01/writeup/index.html">
 <meta property="og:site_name" content="GoldsNow">
+<meta property="og:description" content="Welcome to Hexo! This is your very first post.">
+<meta property="og:updated_time" content="2017-03-23T00:49:55.613Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="GoldsNow">
+<meta name="twitter:title" content="0ctf writeup">
+<meta name="twitter:description" content="Welcome to Hexo! This is your very first post.">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -51,13 +52,11 @@
 <link rel="stylesheet" href="/css/style.css">
 
 
-    <style> .article { opacity: 0;} </style>
-
 
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>GoldsNow</title>
+<title>0ctf writeup | GoldsNow</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -66,8 +65,8 @@
     var yiliaConfig = {
         fancybox: true,
         animate: true,
-        isHome: true,
-        isPost: false,
+        isHome: false,
+        isPost: true,
         isArchive: false,
         isTag: false,
         isCategory: false,
@@ -249,69 +248,7 @@
     </div>
     <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
 </nav>
-      <div class="body-wrap">
-  
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/12/03/hello-world/" class="article-date">
-      <time datetime="2015-12-02T16:00:00.000Z" itemprop="datePublished">2015-12-03</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/12/03/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              Welcome to Hexo! This is your very first post.
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-      
-        <p class="article-more-link">
-          <a href="/2015/12/03/hello-world/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-writeup" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-writeup" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
       <a href="/2011/01/01/writeup/" class="article-date">
@@ -329,39 +266,190 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2011/01/01/writeup/">0ctf writeup</a>
+    <h1 class="article-title" itemprop="name">
+      0ctf writeup
     </h1>
   
 
       </header>
       
+      <div class="article-info article-info-post">
+        
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
     
     <div class="article-entry" itemprop="articleBody">
       
           
-              Welcome to Hexo! This is your very first post.
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
+        <h2 id="welcome"><a href="#welcome" class="headerlink" title="welcome"></a>welcome</h2><p>登录irc就有</p>
+<h2 id="py"><a href="#py" class="headerlink" title="py"></a>py</h2><p>就是一个pyc的逆向，但是要修复，网上找了很多的pyc逆向修复博文，然后最终用一个uncompyle2还原代码，最后的脚本为：</p>
+<pre><code>import rotor
+
+def encrypt(data):
+    key_a = &apos;!@#$%^&amp;*&apos;
+    key_b = &apos;abcdefgh&apos;
+    key_c = &apos;&lt;&gt;{}:&quot;&apos;
+    secret = key_a * 4 + &apos;|&apos; + (key_b + key_a + key_c) * 2 + &apos;|&apos; + key_b * 2 + &apos;EOF&apos;
+    rot = rotor.newrotor(secret)
+    return rot.encrypt(data)
+
+
+def decrypt(data):
+    key_a = &apos;!@#$%^&amp;*&apos;
+    key_b = &apos;abcdefgh&apos;
+    key_c = &apos;&lt;&gt;{}:&quot;&apos;
+    secret = key_a * 4 + &apos;|&apos; + (key_b + key_a + key_c) * 2 + &apos;|&apos; + key_b * 2 + &apos;EOF&apos;
+    rot = rotor.newrotor(secret)
+    return rot.decrypt(data)
+
+
+data = &apos;\xF4\xE4\x98\xFF\x93\xCF\x84\xFB\xDF\x5A\xC6\x21\x20\xE6\x7B\xE3\x81\xD7\xDD\xF3\x0A\xC8\x82\x91\xDB&apos;
+
+print decrypt(data)
+</code></pre><h2 id="oneTimePad"><a href="#oneTimePad" class="headerlink" title="oneTimePad"></a>oneTimePad</h2><p>这一题就是来求出seed和key1的过程，前面一直在考虑来用 urandom 这个伪随机的破解，但是这个根本破不出来哇。</p>
+<p>后面发现只要逆向出process就可以了</p>
+<p>发现每256次就会轮回一次，这样就可以先退出seed然后推出key1</p>
+<pre><code>def test2():
+    seed =0
+    key1 =  0
+    key2 =  0x2a51d5b1bd1abdee4999363397902036332916fbce0982ebd3f5ece8e3ea3959
+    key3 =  0x8f76be63af819557a5a88fca37f631b750348eb8ab0cb69fbdb0b94e4a522b7e
+    ctxt1=  0xaf3fcc28377e7e983355096fd4f635856df82bbab61d2c50892d9ee5d913a07f
+    ctxt2=  0x630eb4dce274d29a16f86940f2f35253477665949170ed9e8c9e828794b5543c
+    ctxt3=  0xe913db07cbe4f433c7cdeaac549757d23651ebdccf69d7fbdfd5dc2829334d1b
+    print &apos;key2 = &apos;,hex(str2num(fake_secret1) ^ ctxt2)[0:-1]
+    print &apos;key3 = &apos;,hex(str2num(fake_secret2) ^ ctxt3)[0:-1]
+    key2 = str2num(fake_secret1) ^ ctxt2
+    key3 = str2num(fake_secret2) ^ ctxt3
+    for i in range(300):
+        key3 = process(key3,key2)
+        if(i==254):
+            print &apos;seed = &apos;,hex(key3)[0:-1]
+            seed = key3
+    for i in range(300):
+        key2 = process(key2,seed)
+        if(i==254):
+            print &apos;key1 = &apos;,hex(key2)[0:-1]
+            key1 = key2
+
+    print hex(key1^ctxt1)[2:-1]
+    print &apos;flag = flag{&apos;+hex(key1^ctxt1)[2:-1].decode(&apos;hex&apos;)+&apos;}&apos;
+
+flag{t0_B3_r4ndoM_en0Ugh_1s_nec3s5arY}
+key2 =  0x2a51d5b1bd1abdee4999363397902036332916fbce0982ebd3f5ece8e3ea3959
+key3 =  0x8f76be63af819557a5a88fca37f631b750348eb8ab0cb69fbdb0b94e4a522b7e
+seed =  0x472cab91ceb46abd08b68a856ca8ec6e156861ea1f186f21f356ad8bfde06b11
+key1 =  0xdb0f936a04210cac5d3166228b935bb5389f43e5876e733eec4ead96ec72d227
+74305f42335f72346e646f4d5f656e305567685f31735f6e6563337335617258
+
+最后不知道为什么最后一位是X，但是不影响 改成Y就过了
+</code></pre><h2 id="intergrity"><a href="#intergrity" class="headerlink" title="intergrity"></a>intergrity</h2><p>这个题目考的是AES-CBC<br>加密完成后的格式为 IV+AES-CBC(md5(pad(name))+pad(name))</p>
+<p>这里因为只是验证了输入不为admin，<br>而name长度可以为32byte，所以直接可以构造name为md5(pad(name))+name，然后舍去原有IV向量，最后取后面的一部分，计算的时候就可以直接过。很棒。</p>
+<p>from pwn import *</p>
+<pre><code>p = remote(&apos;202.120.7.217&apos;,8221)
+
+shellcode = &apos;\x21\x8e\x2a\xb7\x9d\x1e\xf7\x18\xcc\x84\xa4\x72\x45\x0b\xa8\x8f\x61\x64\x6d\x69\x6e&apos;
+
+p.recvuntil(&quot;ogin&quot;)
+p.sendline(&apos;r\n&apos;+shellcode)
+p.recvuntil(&quot;secret:\n&quot;)
+a = p.recv(32*4)
+print a
+print a[32:128]
+
+#p.interactive()
+p.recvuntil(&quot;ogin\n&quot;)
+p.sendline(&apos;l&apos;)
+p.sendline(a[32:128])
+print p.recv(100)
+print p.recv(100)
+</code></pre><p>直接出flag</p>
 
       
-      
-        <p class="article-more-link">
-          <a href="/2011/01/01/writeup/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
     </div>
     
   </div>
   
+    
+    <div class="copyright">
+        <p><span>Title:</span><a href="/2011/01/01/writeup/">0ctf writeup</a></p>
+        <p><span>Author:</span><a href="/" title="Back to Homepage">GoldsNow</a></p>
+        <p><span>Created:</span>2011-01-01, 00:00:00</p>
+        <p><span>Updated:</span>2017-03-23, 08:49:55</p>
+        <p>
+            <span>Full URL:</span><a class="post-url" href="/2011/01/01/writeup/" title="0ctf writeup">http://yoursite.com/2011/01/01/writeup/</a>
+            <span class="copy-path" data-clipboard-text="From http://yoursite.com/2011/01/01/writeup/　　By GoldsNow" title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>License:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"CC BY-NC-SA 4.0"</a> Keep Link &amp; Author if Distribute.
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2015/12/03/hello-world/">
+                    Hello World
+                </a>
+            </div>
+        
+        
+    </nav>
+
+  
 </article>
 
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#welcome"><span class="toc-number">1.</span> <span class="toc-text">welcome</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#py"><span class="toc-number">2.</span> <span class="toc-text">py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#oneTimePad"><span class="toc-number">3.</span> <span class="toc-text">oneTimePad</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#intergrity"><span class="toc-number">4.</span> <span class="toc-text">intergrity</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="Hide"  title="Show or Hide Table of Contents">
+
+    <script>
+        yiliaConfig.toc = ["Hide", "Show", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"0ctf writeup　| GoldsNow　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
 
 
 
@@ -369,9 +457,33 @@
 
 
 
+    
 
-  
-  
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2015/12/03/hello-world/" title="Pre: Hello World">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/" title="Back to Homepage"><i class="fa fa-home"></i></a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2015/12/03/hello-world/">Hello World</a></li><li class="post-list-item"><a class="post-list-link" href="/2011/01/01/writeup/">0ctf writeup</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
 </div>
       <footer id="footer">
     <div class="outer">
