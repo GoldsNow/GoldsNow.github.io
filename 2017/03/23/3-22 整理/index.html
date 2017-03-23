@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>0ctf writeup | GoldsNow</title>
+  <title>CTF の 套路 | GoldsNow</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="0ctf是国际赛，这次参加比赛只做出了一道python逆向和两道密码题，有点小小忧伤">
+  <meta name="description" content="CTF 常见的技能，收集的比较全">
 <meta property="og:type" content="article">
-<meta property="og:title" content="0ctf writeup">
-<meta property="og:url" content="https://GoldsNow.github.io/2017/03/20/writeup/index.html">
+<meta property="og:title" content="CTF の 套路">
+<meta property="og:url" content="https://GoldsNow.github.io/2017/03/23/3-22 整理/index.html">
 <meta property="og:site_name" content="GoldsNow">
-<meta property="og:description" content="0ctf是国际赛，这次参加比赛只做出了一道python逆向和两道密码题，有点小小忧伤">
-<meta property="og:updated_time" content="2017-03-23T14:22:10.840Z">
+<meta property="og:description" content="CTF 常见的技能，收集的比较全">
+<meta property="og:updated_time" content="2017-03-23T15:40:01.230Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="0ctf writeup">
-<meta name="twitter:description" content="0ctf是国际赛，这次参加比赛只做出了一道python逆向和两道密码题，有点小小忧伤">
+<meta name="twitter:title" content="CTF の 套路">
+<meta name="twitter:description" content="CTF 常见的技能，收集的比较全">
   
     <link rel="alternative" href="/atom.xml" title="GoldsNow" type="application/atom+xml">
   
@@ -216,11 +216,11 @@
         </header>                
     </div>
 </nav>
-      <div class="body-wrap"><article id="post-writeup" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-3-22 整理" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/03/20/writeup/" class="article-date">
-      <time datetime="2017-03-19T16:00:00.000Z" itemprop="datePublished">2017-03-20</time>
+      <a href="/2017/03/23/3-22 整理/" class="article-date">
+      <time datetime="2017-03-23T15:33:00.000Z" itemprop="datePublished">2017-03-23</time>
 </a>
     </div>
   
@@ -233,7 +233,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      0ctf writeup
+      CTF の 套路
     </h1>
   
 
@@ -242,13 +242,13 @@
       <div class="article-info article-info-post">
         
     <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/Writeup/">Writeup</a>
+    <a class="article-category-link" href="/categories/总结/">总结</a>
     </div>
 
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/0ctf/">0ctf</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Crypto/">Crypto</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/blog/">blog</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf/">ctf</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -258,16 +258,48 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <h2 id="welcome"><a href="#welcome" class="headerlink" title="welcome"></a>welcome</h2><p>登录irc就有</p>
-<h2 id="py"><a href="#py" class="headerlink" title="py"></a>py</h2><p>就是一个pyc的逆向，但是要修复，网上找了很多的pyc逆向修复博文，然后最终用一个uncompyle2还原代码，最后的脚本为：</p>
-<figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> rotor</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">encrypt</span><span class="params">(data)</span>:</span></div><div class="line">	key_a = <span class="string">'!@#$%^&amp;*'</span></div><div class="line">	key_b = <span class="string">'abcdefgh'</span></div><div class="line">	key_c = <span class="string">'&lt;&gt;&#123;&#125;:"'</span></div><div class="line">	secret = key_a * <span class="number">4</span> + <span class="string">'|'</span> + (key_b + key_a + key_c) * <span class="number">2</span> + <span class="string">'|'</span> + key_b * <span class="number">2</span> + <span class="string">'EOF'</span></div><div class="line">	rot = rotor.newrotor(secret)</div><div class="line">	<span class="keyword">return</span> rot.encrypt(data)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">decrypt</span><span class="params">(data)</span>:</span></div><div class="line">	key_a = <span class="string">'!@#$%^&amp;*'</span></div><div class="line">	key_b = <span class="string">'abcdefgh'</span></div><div class="line">	key_c = <span class="string">'&lt;&gt;&#123;&#125;:"'</span></div><div class="line">	secret = key_a * <span class="number">4</span> + <span class="string">'|'</span> + (key_b + key_a + key_c) * <span class="number">2</span> + <span class="string">'|'</span> + key_b * <span class="number">2</span> + <span class="string">'EOF'</span></div><div class="line">	rot = rotor.newrotor(secret)</div><div class="line">	<span class="keyword">return</span> rot.decrypt(data)</div><div class="line"></div><div class="line">data = <span class="string">'\xF4\xE4\x98\xFF\x93\xCF\x84\xFB\xDF\x5A\xC6\x21\x20\xE6\x7B\xE3\x81\xD7\xDD\xF3\x0A\xC8\x82\x91\xDB'</span></div><div class="line"></div><div class="line"><span class="keyword">print</span> decrypt(data)</div></pre></td></tr></table></figure>
-<h2 id="oneTimePad"><a href="#oneTimePad" class="headerlink" title="oneTimePad"></a>oneTimePad</h2><p>这一题就是来求出seed和key1的过程，前面一直在考虑来用 urandom 这个伪随机的破解，但是这个根本破不出来哇。</p>
-<p>后面发现只要逆向出process就可以了</p>
-<p>发现每256次就会轮回一次，这样就可以先退出seed然后推出key1<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test2</span><span class="params">()</span>:</span></div><div class="line">	seed =<span class="number">0</span></div><div class="line">	key1 =  <span class="number">0</span></div><div class="line">	key2 =  <span class="number">0x2a51d5b1bd1abdee4999363397902036332916fbce0982ebd3f5ece8e3ea3959</span></div><div class="line">	key3 =  <span class="number">0x8f76be63af819557a5a88fca37f631b750348eb8ab0cb69fbdb0b94e4a522b7e</span></div><div class="line">	ctxt1=  <span class="number">0xaf3fcc28377e7e983355096fd4f635856df82bbab61d2c50892d9ee5d913a07f</span></div><div class="line">	ctxt2=  <span class="number">0x630eb4dce274d29a16f86940f2f35253477665949170ed9e8c9e828794b5543c</span></div><div class="line">	ctxt3=  <span class="number">0xe913db07cbe4f433c7cdeaac549757d23651ebdccf69d7fbdfd5dc2829334d1b</span></div><div class="line">	<span class="keyword">print</span> <span class="string">'key2 = '</span>,hex(str2num(fake_secret1) ^ ctxt2)[<span class="number">0</span>:<span class="number">-1</span>]</div><div class="line">	<span class="keyword">print</span> <span class="string">'key3 = '</span>,hex(str2num(fake_secret2) ^ ctxt3)[<span class="number">0</span>:<span class="number">-1</span>]</div><div class="line">	key2 = str2num(fake_secret1) ^ ctxt2</div><div class="line">	key3 = str2num(fake_secret2) ^ ctxt3</div><div class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">300</span>):</div><div class="line">		key3 = process(key3,key2)</div><div class="line">		<span class="keyword">if</span>(i==<span class="number">254</span>):</div><div class="line">			<span class="keyword">print</span> <span class="string">'seed = '</span>,hex(key3)[<span class="number">0</span>:<span class="number">-1</span>]</div><div class="line">			seed = key3</div><div class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">300</span>):</div><div class="line">		key2 = process(key2,seed)</div><div class="line">		<span class="keyword">if</span>(i==<span class="number">254</span>):</div><div class="line">			<span class="keyword">print</span> <span class="string">'key1 = '</span>,hex(key2)[<span class="number">0</span>:<span class="number">-1</span>]</div><div class="line">			key1 = key2</div><div class="line"></div><div class="line">	<span class="keyword">print</span> hex(key1^ctxt1)[<span class="number">2</span>:<span class="number">-1</span>]</div><div class="line">	<span class="keyword">print</span> <span class="string">'flag = flag&#123;'</span>+hex(key1^ctxt1)[<span class="number">2</span>:<span class="number">-1</span>].decode(<span class="string">'hex'</span>)+<span class="string">'&#125;'</span></div><div class="line"></div><div class="line">flag&#123;t0_B3_r4ndoM_en0Ugh_1s_nec3s5arY&#125;</div><div class="line">key2 =  <span class="number">0x2a51d5b1bd1abdee4999363397902036332916fbce0982ebd3f5ece8e3ea3959</span></div><div class="line">key3 =  <span class="number">0x8f76be63af819557a5a88fca37f631b750348eb8ab0cb69fbdb0b94e4a522b7e</span></div><div class="line">seed =  <span class="number">0x472cab91ceb46abd08b68a856ca8ec6e156861ea1f186f21f356ad8bfde06b11</span></div><div class="line">key1 =  <span class="number">0xdb0f936a04210cac5d3166228b935bb5389f43e5876e733eec4ead96ec72d227</span></div><div class="line"><span class="number">74305</span>f42335f72346e646f4d5f656e305567685f31735f6e6563337335617258</div></pre></td></tr></table></figure></p>
-<p>最后不知道为什么最后一位是X，但是不影响 改成Y就过了</p>
-<h2 id="intergrity"><a href="#intergrity" class="headerlink" title="intergrity"></a>intergrity</h2><p>这个题目考的是AES-CBC<br>加密完成后的格式为 IV+AES-CBC(md5(pad(name))+pad(name))</p>
-<p>这里因为只是验证了输入不为admin，<br>而name长度可以为32byte，所以直接可以构造name为md5(pad(name))+name，然后舍去原有IV向量，最后取后面的一部分，计算的时候就可以直接过。很棒。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</div><div class="line"></div><div class="line">p = remote(<span class="string">'202.120.7.217'</span>,<span class="number">8221</span>)</div><div class="line"></div><div class="line">shellcode = <span class="string">'\x21\x8e\x2a\xb7\x9d\x1e\xf7\x18\xcc\x84\xa4\x72\x45\x0b\xa8\x8f\x61\x64\x6d\x69\x6e'</span></div><div class="line"></div><div class="line">p.recvuntil(<span class="string">"ogin"</span>)</div><div class="line">p.sendline(<span class="string">'r\n'</span>+shellcode)</div><div class="line">p.recvuntil(<span class="string">"secret:\n"</span>)</div><div class="line">a = p.recv(<span class="number">32</span>*<span class="number">4</span>)</div><div class="line"><span class="keyword">print</span> a</div><div class="line"><span class="keyword">print</span> a[<span class="number">32</span>:<span class="number">128</span>]</div><div class="line"></div><div class="line"><span class="comment">#p.interactive()</span></div><div class="line">p.recvuntil(<span class="string">"ogin\n"</span>)</div><div class="line">p.sendline(<span class="string">'l'</span>)</div><div class="line">p.sendline(a[<span class="number">32</span>:<span class="number">128</span>])</div><div class="line"><span class="keyword">print</span> p.recv(<span class="number">100</span>)</div><div class="line"><span class="keyword">print</span> p.recv(<span class="number">100</span>)</div></pre></td></tr></table></figure></p>
-<p>直接出flag</p>
+        <h1 id="CTF"><a href="#CTF" class="headerlink" title="CTF"></a>CTF</h1><ul>
+<li><a href="http://blog.csdn.net/ida0918/article/details/52730662" target="_blank" rel="external">ctf学习网站</a> <h2 id="CTF大神博客"><a href="#CTF大神博客" class="headerlink" title="CTF大神博客"></a>CTF大神博客</h2></li>
+<li><a href="https://github.com/ctfs" target="_blank" rel="external">CTFs</a> </li>
+<li><a href="https://bamboofox.github.io/" target="_blank" rel="external">bamboofox</a> </li>
+<li><a href="https://github.com/p4-team/ctf" target="_blank" rel="external">p4-team</a> </li>
+<li><a href="https://github.com/VulnHub/ctf-writeups" target="_blank" rel="external">VulnHub</a> </li>
+<li><a href="http://angelboy.logdown.com/" target="_blank" rel="external">Reversing My Life</a> </li>
+<li><a href="http://blog.angelboy.tw/" target="_blank" rel="external">Pwning My Life</a> </li>
+<li><a href="http://uaf.io/" target="_blank" rel="external">http://uaf.io</a> </li>
+<li><a href="http://ddaa.tw/" target="_blank" rel="external">DDAA’s BLOG</a> </li>
+<li><a href="http://pwnable.kr/" target="_blank" rel="external">pwnable.kr</a> </li>
+<li><a href="https://kitctf.de/" target="_blank" rel="external">KITCTF</a> </li>
+<li><a href="http://rk700.github.io/" target="_blank" rel="external">ctf_记事本</a> </li>
+<li><a href="http://security.cs.rpi.edu/courses/binexp-spring2015/" target="_blank" rel="external">二进制漏洞学习</a> </li>
+</ul>
+<h2 id="CTF技巧总结"><a href="#CTF技巧总结" class="headerlink" title="CTF技巧总结"></a>CTF技巧总结</h2><ul>
+<li><a href="http://naotu.baidu.com/file/3e4a946f06612511e829b126ef7f7242" target="_blank" rel="external">ctf百度脑图</a> </li>
+<li><a href="http://www.tuicool.com/articles/mu6Jv2" target="_blank" rel="external">隐写术总结</a> </li>
+<li><a href="http://www.tuicool.com/articles/VviyAfY" target="_blank" rel="external">CTF中图片隐藏文件分离方法总结</a> </li>
+<li><a href="http://www.tuicool.com/articles/2E3INnm" target="_blank" rel="external">CTF中那些脑洞大开的编码和加密</a> </li>
+<li><a href="http://www.tuicool.com/articles/eEVjaaB" target="_blank" rel="external">那些年做过的ctf之加密篇</a> </li>
+<li><a href="http://www.secbox.cn/hacker/ctf/8078.html" target="_blank" rel="external">那些年做过的ctf之加密篇(补充篇)</a> </li>
+<li><a href="http://www.bystudent.com/?cat=8" target="_blank" rel="external">rsa加解密</a> </li>
+<li><a href="http://www.wtoutiao.com/p/5d4Nad.html" target="_blank" rel="external">流量中提取文件的五种方法</a><h2 id="CTF工具"><a href="#CTF工具" class="headerlink" title="CTF工具"></a>CTF工具</h2></li>
+<li><a href="https://tools.40huo.cn/#!index.md" target="_blank" rel="external">1897军火库</a> </li>
+</ul>
+<h1 id="原理学习"><a href="#原理学习" class="headerlink" title="原理学习"></a>原理学习</h1><h2 id="Linux底层原理"><a href="#Linux底层原理" class="headerlink" title="Linux底层原理"></a>Linux底层原理</h2><ul>
+<li><a href="http://www.tuicool.com/articles/A7n2ueq" target="_blank" rel="external">内存映射mmap</a> <h2 id="栈溢出"><a href="#栈溢出" class="headerlink" title="栈溢出"></a>栈溢出</h2></li>
+<li><a href="http://www.tuicool.com/articles/zUR7nav" target="_blank" rel="external">一步一步学ROP之Android ARM 32位篇</a> </li>
+<li><a href="http://www.tuicool.com/articles/IfYZri3" target="_blank" rel="external">一步一步学ROP之gadgets和2free篇</a> </li>
+<li><a href="http://www.tuicool.com/articles/ZzI7FrI" target="_blank" rel="external">一步一步学ROP之linux_x64篇</a> </li>
+<li><a href="http://www.tuicool.com/articles/ZruA7bZ" target="_blank" rel="external">一步一步学ROP之linux_x86篇</a> </li>
+<li><a href="http://www.tuicool.com/articles/VVBz6va" target="_blank" rel="external">return2libc学习笔记</a> <h2 id="堆利用"><a href="#堆利用" class="headerlink" title="堆利用"></a>堆利用</h2></li>
+<li><a href="http://blog.csdn.net/zdy0_2004/article/details/51485198" target="_blank" rel="external">Linux堆内存管理深入分析</a> </li>
+<li><a href="http://blog.csdn.net/maokelong95/article/details/51989081#allocated-chunk" target="_blank" rel="external">理解 glibc malloc</a> <em> <a href="http://blog.csdn.net/maokelong95/article/details/52006379" target="_blank" rel="external">glibc内存分配与回收过程图解</a> </em> <a href="http://www.tuicool.com/articles/zMRbame" target="_blank" rel="external">Libc堆管理机制及漏洞利用技术</a> <em> <a href="http://www.tuicool.com/articles/E3Ezu2u" target="_blank" rel="external">堆溢出的unlink利用方法</a> </em> <a href="http://www.tuicool.com/articles/iium6fn" target="_blank" rel="external">Linux堆溢出漏洞利用之unlink</a> <em> <a href="http://www.tuicool.com/articles/nyEvU3Q" target="_blank" rel="external">Linux堆溢出利用:unlink</a> </em> <a href="http://www.tuicool.com/articles/6vqIBf6" target="_blank" rel="external">浅析Linux堆溢出之fastbin</a> * <a href="http://www.tuicool.com/articles/aY7Fzav" target="_blank" rel="external">heap overflow&amp;溢出保护和绕过</a> <h2 id="Format-String"><a href="#Format-String" class="headerlink" title="Format String"></a>Format String</h2></li>
+<li><a href="http://bobao.360.cn/learning/detail/695.html" target="_blank" rel="external">漏洞挖掘基础之格式化字符串</a> </li>
+<li><a href="http://bobao.360.cn/ctf/learning/160.html" target="_blank" rel="external">CCTF pwn3格式化字符串漏洞详细writeup</a> </li>
+<li><a href="https://github.com/CTF-Thanos/ctf-writeups/blob/master/2016/CCTF/pwn/pwn3/README.md" target="_blank" rel="external">CCTF pwn3 writeup</a> </li>
+<li><a href="http://www.jianshu.com/p/f2acfeb66b6c" target="_blank" rel="external">Linux高级漏洞攻击</a> </li>
+<li><a href="https://crypto.stanford.edu/cs155old/cs155-spring08/papers/formatstring-1.2.pdf" target="_blank" rel="external">format string PDF</a> <h2 id="android"><a href="#android" class="headerlink" title="android"></a>android</h2></li>
+<li><a href="http://www.wjdiankong.cn/" target="_blank" rel="external">android逆向分析</a></li>
+</ul>
 
       
       
@@ -277,13 +309,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/03/20/writeup/">0ctf writeup</a></p>
+        <p><span>本文标题:</span><a href="/2017/03/23/3-22 整理/">CTF の 套路</a></p>
         <p><span>文章作者:</span><a href="/" title="访问 GoldsNow 的个人博客">GoldsNow</a></p>
-        <p><span>发布时间:</span>2017年03月20日 - 00时00分</p>
-        <p><span>最后更新:</span>2017年03月23日 - 22时22分</p>
+        <p><span>发布时间:</span>2017年03月23日 - 23时33分</p>
+        <p><span>最后更新:</span>2017年03月23日 - 23时40分</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/03/20/writeup/" title="0ctf writeup">https://GoldsNow.github.io/2017/03/20/writeup/</a>
-            <span class="copy-path" data-clipboard-text="原文: https://GoldsNow.github.io/2017/03/20/writeup/　　作者: GoldsNow" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/03/23/3-22 整理/" title="CTF の 套路">https://GoldsNow.github.io/2017/03/23/3-22 整理/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://GoldsNow.github.io/2017/03/23/3-22 整理/　　作者: GoldsNow" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script src="/js/clipboard.min.js"></script>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
@@ -296,15 +328,11 @@
 
 <nav id="article-nav">
   
-    <a href="/2017/03/23/3-22 pwnable/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          fsb pwnable
-        
-      </div>
-    </a>
   
+    <a href="/2017/03/23/3-22 pwnable/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">fsb pwnable</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
   
 </nav>
 
@@ -313,7 +341,7 @@
 
     <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#welcome"><span class="toc-number">1.</span> <span class="toc-text">welcome</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#py"><span class="toc-number">2.</span> <span class="toc-text">py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#oneTimePad"><span class="toc-number">3.</span> <span class="toc-text">oneTimePad</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#intergrity"><span class="toc-number">4.</span> <span class="toc-text">intergrity</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#CTF"><span class="toc-number">1.</span> <span class="toc-text">CTF</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#CTF大神博客"><span class="toc-number">1.1.</span> <span class="toc-text">CTF大神博客</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CTF技巧总结"><span class="toc-number">1.2.</span> <span class="toc-text">CTF技巧总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CTF工具"><span class="toc-number">1.3.</span> <span class="toc-text">CTF工具</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#原理学习"><span class="toc-number">2.</span> <span class="toc-text">原理学习</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Linux底层原理"><span class="toc-number">2.1.</span> <span class="toc-text">Linux底层原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#栈溢出"><span class="toc-number">2.2.</span> <span class="toc-text">栈溢出</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#堆利用"><span class="toc-number">2.3.</span> <span class="toc-text">堆利用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Format-String"><span class="toc-number">2.4.</span> <span class="toc-text">Format String</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#android"><span class="toc-number">2.5.</span> <span class="toc-text">android</span></a></li></ol></li></ol>
 </div>
 <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
 
@@ -364,13 +392,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/03/23/3-22 pwnable/" title="上一篇: fsb pwnable">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
         
-            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+            <a href="/2017/03/23/3-22 pwnable/" title="下一篇: fsb pwnable">
+                <i class="fa fa-angle-right"></i>
+            </a>
         
     </div>
     <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/03/23/3-22 整理/">CTF の 套路</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/23/3-22 pwnable/">fsb pwnable</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/writeup/">0ctf writeup</a></li></ul>
