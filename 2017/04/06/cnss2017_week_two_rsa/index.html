@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>0ctf writeup | GoldsNow</title>
+  <title>cnss rsa | GoldsNow</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="0ctf是国际赛，这次参加比赛只做出了一道python逆向和两道密码题，有点小小忧伤">
+  <meta name="description" content="这个题目和BCTF的RSA200是一模一样的，但是搞懂rsa的同模攻击花了我好长的时间，这个真的需要有一定的数学基础才能够顺利的完成呢。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="0ctf writeup">
-<meta property="og:url" content="https://GoldsNow.github.io/2017/03/20/writeup/index.html">
+<meta property="og:title" content="cnss rsa">
+<meta property="og:url" content="https://GoldsNow.github.io/2017/04/06/cnss2017_week_two_rsa/index.html">
 <meta property="og:site_name" content="GoldsNow">
-<meta property="og:description" content="0ctf是国际赛，这次参加比赛只做出了一道python逆向和两道密码题，有点小小忧伤">
-<meta property="og:updated_time" content="2017-03-23T14:22:10.840Z">
+<meta property="og:description" content="这个题目和BCTF的RSA200是一模一样的，但是搞懂rsa的同模攻击花了我好长的时间，这个真的需要有一定的数学基础才能够顺利的完成呢。">
+<meta property="og:updated_time" content="2017-04-06T12:13:56.425Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="0ctf writeup">
-<meta name="twitter:description" content="0ctf是国际赛，这次参加比赛只做出了一道python逆向和两道密码题，有点小小忧伤">
+<meta name="twitter:title" content="cnss rsa">
+<meta name="twitter:description" content="这个题目和BCTF的RSA200是一模一样的，但是搞懂rsa的同模攻击花了我好长的时间，这个真的需要有一定的数学基础才能够顺利的完成呢。">
   
     <link rel="alternative" href="/atom.xml" title="GoldsNow" type="application/atom+xml">
   
@@ -220,11 +220,11 @@
         </header>                
     </div>
 </nav>
-      <div class="body-wrap"><article id="post-writeup" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-cnss2017_week_two_rsa" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/03/20/writeup/" class="article-date">
-      <time datetime="2017-03-19T16:00:00.000Z" itemprop="datePublished">2017-03-20</time>
+      <a href="/2017/04/06/cnss2017_week_two_rsa/" class="article-date">
+      <time datetime="2017-04-06T06:01:00.000Z" itemprop="datePublished">2017-04-06</time>
 </a>
     </div>
   
@@ -237,7 +237,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      0ctf writeup
+      cnss rsa
     </h1>
   
 
@@ -252,7 +252,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/0ctf/">0ctf</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Crypto/">Crypto</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Crypto/">Crypto</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cnss-2017/">cnss 2017</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -262,16 +262,56 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <h2 id="welcome"><a href="#welcome" class="headerlink" title="welcome"></a>welcome</h2><p>登录irc就有</p>
-<h2 id="py"><a href="#py" class="headerlink" title="py"></a>py</h2><p>就是一个pyc的逆向，但是要修复，网上找了很多的pyc逆向修复博文，然后最终用一个uncompyle2还原代码，最后的脚本为：</p>
-<figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> rotor</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">encrypt</span><span class="params">(data)</span>:</span></div><div class="line">	key_a = <span class="string">'!@#$%^&amp;*'</span></div><div class="line">	key_b = <span class="string">'abcdefgh'</span></div><div class="line">	key_c = <span class="string">'&lt;&gt;&#123;&#125;:"'</span></div><div class="line">	secret = key_a * <span class="number">4</span> + <span class="string">'|'</span> + (key_b + key_a + key_c) * <span class="number">2</span> + <span class="string">'|'</span> + key_b * <span class="number">2</span> + <span class="string">'EOF'</span></div><div class="line">	rot = rotor.newrotor(secret)</div><div class="line">	<span class="keyword">return</span> rot.encrypt(data)</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">decrypt</span><span class="params">(data)</span>:</span></div><div class="line">	key_a = <span class="string">'!@#$%^&amp;*'</span></div><div class="line">	key_b = <span class="string">'abcdefgh'</span></div><div class="line">	key_c = <span class="string">'&lt;&gt;&#123;&#125;:"'</span></div><div class="line">	secret = key_a * <span class="number">4</span> + <span class="string">'|'</span> + (key_b + key_a + key_c) * <span class="number">2</span> + <span class="string">'|'</span> + key_b * <span class="number">2</span> + <span class="string">'EOF'</span></div><div class="line">	rot = rotor.newrotor(secret)</div><div class="line">	<span class="keyword">return</span> rot.decrypt(data)</div><div class="line"></div><div class="line">data = <span class="string">'\xF4\xE4\x98\xFF\x93\xCF\x84\xFB\xDF\x5A\xC6\x21\x20\xE6\x7B\xE3\x81\xD7\xDD\xF3\x0A\xC8\x82\x91\xDB'</span></div><div class="line"></div><div class="line"><span class="keyword">print</span> decrypt(data)</div></pre></td></tr></table></figure>
-<h2 id="oneTimePad"><a href="#oneTimePad" class="headerlink" title="oneTimePad"></a>oneTimePad</h2><p>这一题就是来求出seed和key1的过程，前面一直在考虑来用 urandom 这个伪随机的破解，但是这个根本破不出来哇。</p>
-<p>后面发现只要逆向出process就可以了</p>
-<p>发现每256次就会轮回一次，这样就可以先退出seed然后推出key1<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test2</span><span class="params">()</span>:</span></div><div class="line">	seed =<span class="number">0</span></div><div class="line">	key1 =  <span class="number">0</span></div><div class="line">	key2 =  <span class="number">0x2a51d5b1bd1abdee4999363397902036332916fbce0982ebd3f5ece8e3ea3959</span></div><div class="line">	key3 =  <span class="number">0x8f76be63af819557a5a88fca37f631b750348eb8ab0cb69fbdb0b94e4a522b7e</span></div><div class="line">	ctxt1=  <span class="number">0xaf3fcc28377e7e983355096fd4f635856df82bbab61d2c50892d9ee5d913a07f</span></div><div class="line">	ctxt2=  <span class="number">0x630eb4dce274d29a16f86940f2f35253477665949170ed9e8c9e828794b5543c</span></div><div class="line">	ctxt3=  <span class="number">0xe913db07cbe4f433c7cdeaac549757d23651ebdccf69d7fbdfd5dc2829334d1b</span></div><div class="line">	<span class="keyword">print</span> <span class="string">'key2 = '</span>,hex(str2num(fake_secret1) ^ ctxt2)[<span class="number">0</span>:<span class="number">-1</span>]</div><div class="line">	<span class="keyword">print</span> <span class="string">'key3 = '</span>,hex(str2num(fake_secret2) ^ ctxt3)[<span class="number">0</span>:<span class="number">-1</span>]</div><div class="line">	key2 = str2num(fake_secret1) ^ ctxt2</div><div class="line">	key3 = str2num(fake_secret2) ^ ctxt3</div><div class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">300</span>):</div><div class="line">		key3 = process(key3,key2)</div><div class="line">		<span class="keyword">if</span>(i==<span class="number">254</span>):</div><div class="line">			<span class="keyword">print</span> <span class="string">'seed = '</span>,hex(key3)[<span class="number">0</span>:<span class="number">-1</span>]</div><div class="line">			seed = key3</div><div class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">300</span>):</div><div class="line">		key2 = process(key2,seed)</div><div class="line">		<span class="keyword">if</span>(i==<span class="number">254</span>):</div><div class="line">			<span class="keyword">print</span> <span class="string">'key1 = '</span>,hex(key2)[<span class="number">0</span>:<span class="number">-1</span>]</div><div class="line">			key1 = key2</div><div class="line"></div><div class="line">	<span class="keyword">print</span> hex(key1^ctxt1)[<span class="number">2</span>:<span class="number">-1</span>]</div><div class="line">	<span class="keyword">print</span> <span class="string">'flag = flag&#123;'</span>+hex(key1^ctxt1)[<span class="number">2</span>:<span class="number">-1</span>].decode(<span class="string">'hex'</span>)+<span class="string">'&#125;'</span></div><div class="line"></div><div class="line">flag&#123;t0_B3_r4ndoM_en0Ugh_1s_nec3s5arY&#125;</div><div class="line">key2 =  <span class="number">0x2a51d5b1bd1abdee4999363397902036332916fbce0982ebd3f5ece8e3ea3959</span></div><div class="line">key3 =  <span class="number">0x8f76be63af819557a5a88fca37f631b750348eb8ab0cb69fbdb0b94e4a522b7e</span></div><div class="line">seed =  <span class="number">0x472cab91ceb46abd08b68a856ca8ec6e156861ea1f186f21f356ad8bfde06b11</span></div><div class="line">key1 =  <span class="number">0xdb0f936a04210cac5d3166228b935bb5389f43e5876e733eec4ead96ec72d227</span></div><div class="line"><span class="number">74305</span>f42335f72346e646f4d5f656e305567685f31735f6e6563337335617258</div></pre></td></tr></table></figure></p>
-<p>最后不知道为什么最后一位是X，但是不影响 改成Y就过了</p>
-<h2 id="intergrity"><a href="#intergrity" class="headerlink" title="intergrity"></a>intergrity</h2><p>这个题目考的是AES-CBC<br>加密完成后的格式为 IV+AES-CBC(md5(pad(name))+pad(name))</p>
-<p>这里因为只是验证了输入不为admin，<br>而name长度可以为32byte，所以直接可以构造name为md5(pad(name))+name，然后舍去原有IV向量，最后取后面的一部分，计算的时候就可以直接过。很棒。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</div><div class="line"></div><div class="line">p = remote(<span class="string">'202.120.7.217'</span>,<span class="number">8221</span>)</div><div class="line"></div><div class="line">shellcode = <span class="string">'\x21\x8e\x2a\xb7\x9d\x1e\xf7\x18\xcc\x84\xa4\x72\x45\x0b\xa8\x8f\x61\x64\x6d\x69\x6e'</span></div><div class="line"></div><div class="line">p.recvuntil(<span class="string">"ogin"</span>)</div><div class="line">p.sendline(<span class="string">'r\n'</span>+shellcode)</div><div class="line">p.recvuntil(<span class="string">"secret:\n"</span>)</div><div class="line">a = p.recv(<span class="number">32</span>*<span class="number">4</span>)</div><div class="line"><span class="keyword">print</span> a</div><div class="line"><span class="keyword">print</span> a[<span class="number">32</span>:<span class="number">128</span>]</div><div class="line"></div><div class="line"><span class="comment">#p.interactive()</span></div><div class="line">p.recvuntil(<span class="string">"ogin\n"</span>)</div><div class="line">p.sendline(<span class="string">'l'</span>)</div><div class="line">p.sendline(a[<span class="number">32</span>:<span class="number">128</span>])</div><div class="line"><span class="keyword">print</span> p.recv(<span class="number">100</span>)</div><div class="line"><span class="keyword">print</span> p.recv(<span class="number">100</span>)</div></pre></td></tr></table></figure></p>
-<p>直接出flag</p>
+        <p>这个题目和BCTF的RSA200是一模一样的，但是搞懂rsa的同模攻击花了我好长的时间，这个真的需要有一定的数学基础才能够顺利的完成呢。</p>
+<a id="more"></a>
+<h3 id="补充知识"><a href="#补充知识" class="headerlink" title="补充知识"></a>补充知识</h3><p>参考了台湾大佬0xddaa的博客，了解一下模运算的几个重要的特性，才为最后能够解出题目做出铺垫：</p>
+<ol>
+<li>% 运算子优先度最后</li>
+<li>满足足加法律  <ul>
+<li><code>a + b % N = (a % N + b % N) % N</code></li>
+</ul>
+</li>
+<li>減法等同加上倒数, 因此也满足减法  <ul>
+<li><code>a - b % N = (a % N - b % N) % N</code></li>
+</ul>
+</li>
+<li>乘法等于连加, 因此满足乘法  <ul>
+<li><code>a * b % N = (a % N * b % N) % N</code>  </li>
+</ul>
+</li>
+<li>除法等同乘上倒数, 倒数就是模反元素  <ul>
+<li><code>a * b_inv % N = (a % N / b % N) % N</code>  </li>
+</ul>
+</li>
+<li>指数等于连乘，因此满足指数律 (<code>^</code> 表示平方)  <ul>
+<li><code>(a * b) ^ r % N = (a ^ r % N) * (b ^ r % N) % N</code>  </li>
+<li><code>(a - b) ^ r % N = (a ^ r % N) / (b ^ r % N) % N</code>  </li>
+<li><code>g ^ (a + b) % N = (g ^ a % N) * (g ^ b % N) % N</code>  </li>
+</ul>
+</li>
+<li>任何数乘上模反元素的余数会是 1<ul>
+<li><code>a * a_inv % N = 1</code> </li>
+</ul>
+</li>
+</ol>
+<p>所以可以先看一下解密的原理</p>
+<p>解密的原理是:   </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">    pow(k_inv, r, N) * c % N</div><div class="line">=   pow(k_inv, r, N) * ((pow(k, r, N) * m) % N) % N</div><div class="line">=   (pow(k_inv, r, N) % N) * ((pow(k, r, N) * m) % N) % N   // pow(k_inv, r, N) = pow(k_inv, r, N) % N</div><div class="line">=   pow(k_inv, r, N) * (pow(k, r, N) * m) % N               // (a % N * b % N) % N = a * b % N</div><div class="line">=   pow(k_inv * k, r, N) * m % N                            // (a * b) ^ r % N = (a ^ r % N) * (b ^ r % N) % N</div><div class="line">=   pow(<span class="number">1</span>, r, N) * m % N                                    // k * k_inv % N = <span class="number">1</span></div><div class="line">=   m % N                                                   // m &lt; N</div><div class="line">=   m</div></pre></td></tr></table></figure>
+<p>网上找了一个通用的共模攻击脚本</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">s = egcd(e1, e2)</div><div class="line">s1 = s[<span class="number">1</span>]</div><div class="line">s2 = s[<span class="number">2</span>]</div><div class="line"><span class="keyword">print</span> s</div><div class="line">n=n1</div><div class="line"><span class="keyword">if</span> s1 &lt; <span class="number">0</span>:</div><div class="line">    s1 = - s1</div><div class="line">    c1 = modinv(c1, n)</div><div class="line"><span class="keyword">elif</span> s2 &lt; <span class="number">0</span>:</div><div class="line">    s2 = - s2</div><div class="line">    c2 = modinv(c2, n)</div><div class="line">m=(pow(c1,s1,n)*pow(c2,s2,n)) % n</div></pre></td></tr></table></figure>
+<p>这个时候我们回过来看一下 加密函数</p>
+<p><code>c = (pow(k, r, N) * m) % N</code></p>
+<p>可以推出</p>
+<p><code>c * m_inv % N = pow(k, r, N)</code></p>
+<p><code>pow(k, r1, N) = c1 * m1_inv % N</code></p>
+<p><code>pow(k, r2, N) = c2 * m2_inv % N</code></p>
+<p>最后可以写出解密函数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">slove</span><span class="params">()</span>:</span></div><div class="line">	r1 = <span class="number">0x8750457a355e4479cec27206a027db2dcb7350cae91d4aa92c226779a8d09c7b</span></div><div class="line">	r2 = <span class="number">0x5bd4f814f9a1690c6834849d1b0810dfb75a26703256b992f09d7686eea72106</span></div><div class="line">	c1 = <span class="number">0x74a1af7b866c1ee2564824c04bdde21291d880c52c2c04332eca3f3b944a7f0e11cc5a184e1e3bd11679ddbac9a7bc9ccb6a2e4b8244c39993d7f0d2bd1858fb2f</span></div><div class="line">	c2 = <span class="number">0xcb60fe6a10ebba90a5b9e2c9a3a9ffc4ea41af152d02f29bb784e0b8a5d137617e94f87d46c1625f84437be81ebd1801ab797230fed665318edb1de5c0149f4aca</span></div><div class="line">	</div><div class="line">	m = <span class="string">"This problem is adapted from BCTF."</span></div><div class="line">	m1 = str2num(m)</div><div class="line">	m = <span class="string">"Hope you enjoy modular arithmetic."</span></div><div class="line">	m2 = str2num(m)</div><div class="line">	t1 = c1 * mod_inv(m1)</div><div class="line">	t2 = c2 * mod_inv(m2)</div><div class="line"></div><div class="line">	s = ex_gcd(r1, r2)</div><div class="line">	<span class="keyword">print</span> s</div><div class="line">	s1 = s[<span class="number">1</span>]</div><div class="line">	s2 = s[<span class="number">2</span>]</div><div class="line">	n=N</div><div class="line">	<span class="keyword">if</span> s1&lt;<span class="number">0</span>:</div><div class="line">		s1 = - s1</div><div class="line">		t1 = mod_inv(t1)</div><div class="line">	<span class="keyword">elif</span> s2&lt;<span class="number">0</span>:</div><div class="line">		s2 = - s2</div><div class="line">		t2 = mod_inv(t2)</div><div class="line">	m=(pow((t1)%n,s1,n)*pow((t2)%n,s2,n)) % n</div><div class="line">	<span class="keyword">print</span> hex(m)[<span class="number">2</span>:<span class="number">-1</span>].decode(<span class="string">"hex"</span>)</div><div class="line">	<span class="keyword">print</span> m</div></pre></td></tr></table></figure>
+<h3 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h3><p>[1] <a href="http://0x48.pw/2016/03/17/0x14/" target="_blank" rel="external">0CTF RSA?总结 || RSA学习笔记</a></p>
+<p>[2] <a href="http://ddaa.tw/bctf_crypto_200_special_rsa.html" target="_blank" rel="external">BCTF 2016 crypto 200 Special RSA</a></p>
+<p>[3] <a href="https://cryptsec.wordpress.com/2016/03/21/bctf-2016-write-up-special-rsa-crypto-200/" target="_blank" rel="external">My Write-up on BCTF 2016: Special RSA (Crypto 200)</a></p>
+<p>[4] <a href="http://bobao.360.cn/learning/detail/3058.html" target="_blank" rel="external">【技术分享】CTF中RSA的常见攻击方法</a></p>
+<p>[5] <a href="http://www.freebuf.com/news/topnews/100143.html" target="_blank" rel="external">BCTF解题报告</a></p>
 
       
       
@@ -281,13 +321,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/03/20/writeup/">0ctf writeup</a></p>
+        <p><span>本文标题:</span><a href="/2017/04/06/cnss2017_week_two_rsa/">cnss rsa</a></p>
         <p><span>文章作者:</span><a href="/" title="访问 GoldsNow 的个人博客">GoldsNow</a></p>
-        <p><span>发布时间:</span>2017年03月20日 - 00时00分</p>
-        <p><span>最后更新:</span>2017年03月23日 - 22时22分</p>
+        <p><span>发布时间:</span>2017年04月06日 - 14时01分</p>
+        <p><span>最后更新:</span>2017年04月06日 - 20时13分</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/03/20/writeup/" title="0ctf writeup">https://GoldsNow.github.io/2017/03/20/writeup/</a>
-            <span class="copy-path" data-clipboard-text="原文: https://GoldsNow.github.io/2017/03/20/writeup/　　作者: GoldsNow" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/04/06/cnss2017_week_two_rsa/" title="cnss rsa">https://GoldsNow.github.io/2017/04/06/cnss2017_week_two_rsa/</a>
+            <span class="copy-path" data-clipboard-text="原文: https://GoldsNow.github.io/2017/04/06/cnss2017_week_two_rsa/　　作者: GoldsNow" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script src="/js/clipboard.min.js"></script>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
@@ -300,15 +340,11 @@
 
 <nav id="article-nav">
   
-    <a href="/2017/03/23/3-22 pwnable/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          fsb pwnable
-        
-      </div>
-    </a>
   
+    <a href="/2017/04/05/cnss2017_week_two_pwn/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">cnss pwn</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
   
 </nav>
 
@@ -317,7 +353,7 @@
 
     <div id="toc" class="toc-article">
     <strong class="toc-title">文章目录</strong>
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#welcome"><span class="toc-number">1.</span> <span class="toc-text">welcome</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#py"><span class="toc-number">2.</span> <span class="toc-text">py</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#oneTimePad"><span class="toc-number">3.</span> <span class="toc-text">oneTimePad</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#intergrity"><span class="toc-number">4.</span> <span class="toc-text">intergrity</span></a></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#补充知识"><span class="toc-number">1.</span> <span class="toc-text">补充知识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参考文章"><span class="toc-number">2.</span> <span class="toc-text">参考文章</span></a></li></ol>
 </div>
 <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
 
@@ -368,13 +404,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/03/23/3-22 pwnable/" title="上一篇: fsb pwnable">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
         
-            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+            <a href="/2017/04/05/cnss2017_week_two_pwn/" title="下一篇: cnss pwn">
+                <i class="fa fa-angle-right"></i>
+            </a>
         
     </div>
     <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/04/06/cnss2017_week_two_rsa/">cnss rsa</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/05/cnss2017_week_two_pwn/">cnss pwn</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/30/x64之__libc_csu_init通用gadget/">x64 之 __libc_csu_init 通用gadget</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/25/[JarvisOJ]level4/">JarvisOJ level4</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/25/[JarvisOJ]level3_x64/">JarvisOJ level3_x64</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/24/[JarvisOJ]level3/">JarvisOJ level3</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/24/[JarvisOJ]level0/">JarvisOJ level0</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/24/[JarvisOJ]level_x64/">JarvisOJ level2_x64</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/24/[JarvisOJ]guestbook/">JarvisOJ guestbook</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/23/3-22 整理/">CTF の 套路</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/23/3-22 pwnable/">fsb pwnable</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/writeup/">0ctf writeup</a></li></ul>
