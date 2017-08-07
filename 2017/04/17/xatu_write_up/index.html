@@ -6,19 +6,13 @@
   <title>CSTC 2017 WRITEUP | GoldsNow</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="Crypto签到-欢迎来到CSTC2017ZmxhZ3tXZWlTdW9GeXVfQmllTGFuZ30=
-签到题， base64 解密，flag : flag{WeiSuoFyu_BieLang}
-crypt2 200通过流量包的分析可以发现有两个人在用相同的N不同的E，发送给服务器，然后返回一段密文
-这个时候就公用了一个N，可以使用RSA的共模攻击来解决这个问题。
-12345678910111">
+签到题， base64 解密，flag : flag{WeiSuoFyu_BieLang}">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CSTC 2017 WRITEUP">
 <meta property="og:url" content="https://GoldsNow.github.io/2017/04/17/xatu_write_up/index.html">
 <meta property="og:site_name" content="GoldsNow">
 <meta property="og:description" content="Crypto签到-欢迎来到CSTC2017ZmxhZ3tXZWlTdW9GeXVfQmllTGFuZ30=
-签到题， base64 解密，flag : flag{WeiSuoFyu_BieLang}
-crypt2 200通过流量包的分析可以发现有两个人在用相同的N不同的E，发送给服务器，然后返回一段密文
-这个时候就公用了一个N，可以使用RSA的共模攻击来解决这个问题。
-12345678910111">
+签到题， base64 解密，flag : flag{WeiSuoFyu_BieLang}">
 <meta property="og:image" content="http://ooi5qeh75.bkt.clouddn.com/android1-1.png">
 <meta property="og:image" content="http://ooi5qeh75.bkt.clouddn.com/android1-0.png">
 <meta property="og:image" content="http://ooi5qeh75.bkt.clouddn.com/android2-1.png">
@@ -38,14 +32,11 @@ crypt2 200通过流量包的分析可以发现有两个人在用相同的N不同
 <meta property="og:image" content="http://ooi5qeh75.bkt.clouddn.com/bin3-5.png">
 <meta property="og:image" content="http://ooi5qeh75.bkt.clouddn.com/bin3-6.png">
 <meta property="og:image" content="http://ooi5qeh75.bkt.clouddn.com/bin3-7.png">
-<meta property="og:updated_time" content="2017-04-16T16:38:45.474Z">
+<meta property="og:updated_time" content="2017-08-07T06:31:19.251Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CSTC 2017 WRITEUP">
 <meta name="twitter:description" content="Crypto签到-欢迎来到CSTC2017ZmxhZ3tXZWlTdW9GeXVfQmllTGFuZ30=
-签到题， base64 解密，flag : flag{WeiSuoFyu_BieLang}
-crypt2 200通过流量包的分析可以发现有两个人在用相同的N不同的E，发送给服务器，然后返回一段密文
-这个时候就公用了一个N，可以使用RSA的共模攻击来解决这个问题。
-12345678910111">
+签到题， base64 解密，flag : flag{WeiSuoFyu_BieLang}">
 <meta name="twitter:image" content="http://ooi5qeh75.bkt.clouddn.com/android1-1.png">
   
     <link rel="alternative" href="/atom.xml" title="GoldsNow" type="application/atom+xml">
@@ -296,6 +287,7 @@ crypt2 200通过流量包的分析可以发现有两个人在用相同的N不同
           
         <h2 id="Crypto"><a href="#Crypto" class="headerlink" title="Crypto"></a>Crypto</h2><h3 id="签到-欢迎来到CSTC2017"><a href="#签到-欢迎来到CSTC2017" class="headerlink" title="签到-欢迎来到CSTC2017"></a>签到-欢迎来到CSTC2017</h3><p><code>ZmxhZ3tXZWlTdW9GeXVfQmllTGFuZ30=</code></p>
 <p>签到题， base64 解密，flag : flag{WeiSuoFyu_BieLang}</p>
+<a id="more"></a>
 <h3 id="crypt2-200"><a href="#crypt2-200" class="headerlink" title="crypt2 200"></a>crypt2 200</h3><p>通过流量包的分析可以发现有两个人在用相同的N不同的E，发送给服务器，然后返回一段密文</p>
 <p>这个时候就公用了一个N，可以使用RSA的共模攻击来解决这个问题。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line">e1 = <span class="number">3</span></div><div class="line">n1 = <span class="number">295722865793798033460986793237541395631977030560369657198479193181766567057754287459743723539658396944636677358515648785314565228205230261697963097395812598331880872455869139731578362748460265979187318613591087019956434720952036757300875287830045303192314296720794872499471775336492552983354160440794987630219</span></div><div class="line">c1 = <span class="number">15839981826811799772634108807452583389456749354145216574984222938829756753294086924872110969732766251541785740757693788214686206806750788561292837339359061701208001297802597</span></div><div class="line"></div><div class="line"></div><div class="line">e2 =<span class="number">7</span> </div><div class="line"></div><div class="line">n2 = <span class="number">295722865793798033460986793237541395631977030560369657198479193181766567057754287459743723539658396944636677358515648785314565228205230261697963097395812598331880872455869139731578362748460265979187318613591087019956434720952036757300875287830045303192314296720794872499471775336492552983354160440794987630219</span></div><div class="line"></div><div class="line">c2 = <span class="number">155249880144094802834481749928592059461139577288355397447367776112547796231086359709731959934830872744121046740255722326833958323017063249153808715277882003426237167195613685868065416967276090907468102632169601247074603247233477582113388294508579159856963458656960060635516531998836585340648309492666005454968</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">egcd</span><span class="params">(a, b)</span>:</span></div><div class="line">	<span class="keyword">if</span> a == <span class="number">0</span>:</div><div class="line">		<span class="keyword">return</span> (b, <span class="number">0</span>, <span class="number">1</span>)</div><div class="line">	<span class="keyword">else</span>:</div><div class="line">		g, y, x = egcd(b % a, a)</div><div class="line">		<span class="keyword">return</span> (g, x - (b // a) * y, y)</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">modinv</span><span class="params">(a, m)</span>:</span></div><div class="line">	g, x, y = egcd(a, m)</div><div class="line">	<span class="keyword">if</span> g != <span class="number">1</span>:</div><div class="line">		<span class="keyword">raise</span> Exception(<span class="string">'modular inverse does not exist'</span>)</div><div class="line">	<span class="keyword">else</span>:</div><div class="line">		<span class="keyword">return</span> x % m</div><div class="line"></div><div class="line">s = egcd(e1, e2)</div><div class="line">s1 = s[<span class="number">1</span>]</div><div class="line">s2 = s[<span class="number">2</span>]</div><div class="line"><span class="keyword">print</span> s</div><div class="line">n=n1</div><div class="line"><span class="keyword">if</span> s1&lt;<span class="number">0</span>:</div><div class="line">	s1 = - s1</div><div class="line">	c1 = modinv(c1, n)</div><div class="line"><span class="keyword">elif</span> s2&lt;<span class="number">0</span>:</div><div class="line">	s2 = - s2</div><div class="line">	c2 = modinv(c2, n)</div><div class="line"></div><div class="line">m=(pow(c1,s1,n)*pow(c2,s2,n)) % n</div><div class="line"><span class="keyword">print</span> hex(m)[<span class="number">2</span>:<span class="number">-1</span>].decode(<span class="string">'hex'</span>)</div></pre></td></tr></table></figure>
@@ -392,7 +384,7 @@ if btn_flag == 1 :
         <p><span>本文标题:</span><a href="/2017/04/17/xatu_write_up/">CSTC 2017 WRITEUP</a></p>
         <p><span>文章作者:</span><a href="/" title="访问 GoldsNow 的个人博客">GoldsNow</a></p>
         <p><span>发布时间:</span>2017年04月17日 - 00时33分</p>
-        <p><span>最后更新:</span>2017年04月17日 - 00时38分</p>
+        <p><span>最后更新:</span>2017年08月07日 - 14时31分</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/04/17/xatu_write_up/" title="CSTC 2017 WRITEUP">https://GoldsNow.github.io/2017/04/17/xatu_write_up/</a>
             <span class="copy-path" data-clipboard-text="原文: https://GoldsNow.github.io/2017/04/17/xatu_write_up/　　作者: GoldsNow" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
