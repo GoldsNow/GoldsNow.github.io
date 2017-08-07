@@ -141,7 +141,7 @@
                 
                 <section class="switch-part switch-part2">
                     <div class="widget tagcloud" id="js-tagcloud">
-                        <a href="/tags/0ctf/" style="font-size: 10px;">0ctf</a> <a href="/tags/CSTC-2017/" style="font-size: 10px;">CSTC 2017</a> <a href="/tags/Crypto/" style="font-size: 13.33px;">Crypto</a> <a href="/tags/Jarvis-oj/" style="font-size: 16.67px;">Jarvis oj</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/cnss-2017/" style="font-size: 13.33px;">cnss 2017</a> <a href="/tags/ctf/" style="font-size: 10px;">ctf</a> <a href="/tags/gadget/" style="font-size: 10px;">gadget</a> <a href="/tags/pwn/" style="font-size: 20px;">pwn</a> <a href="/tags/pwnable-kr/" style="font-size: 10px;">pwnable.kr</a>
+                        <a href="/tags/0ctf/" style="font-size: 10px;">0ctf</a> <a href="/tags/CSTC-2017/" style="font-size: 10px;">CSTC 2017</a> <a href="/tags/Crypto/" style="font-size: 13.33px;">Crypto</a> <a href="/tags/Jarvis-oj/" style="font-size: 16.67px;">Jarvis oj</a> <a href="/tags/Native/" style="font-size: 10px;">Native</a> <a href="/tags/Obfuscator-llvm/" style="font-size: 10px;">Obfuscator-llvm</a> <a href="/tags/blog/" style="font-size: 10px;">blog</a> <a href="/tags/cnss-2017/" style="font-size: 13.33px;">cnss 2017</a> <a href="/tags/ctf/" style="font-size: 10px;">ctf</a> <a href="/tags/gadget/" style="font-size: 10px;">gadget</a> <a href="/tags/pwn/" style="font-size: 20px;">pwn</a> <a href="/tags/pwnable-kr/" style="font-size: 10px;">pwnable.kr</a>
                     </div>
                 </section>
                 
@@ -220,6 +220,105 @@
     </div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-android-ollvm" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/08/07/android-ollvm/" class="article-date">
+      <time datetime="2017-08-07T06:11:00.000Z" itemprop="datePublished">2017-08-07</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/07/android-ollvm/">Android Native Obfuscator-llvm</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>此次全国大学生信息安全竞赛之中坑就坑在要在比赛之前提供题目，然后选择了出安卓题，就遇到了很多的坑点</p>
+<p>最值得学习的是在<code>Android native</code> 加入使用了 <code>ollvm</code>，</p>
+<p>找了很多的文章，都是先要在linux下面将<code>Android</code>的<code>Native</code> 实现编译完成之后然后，再加到Android Studio下</p>
+<p><a href="https://github.com/obfuscator-llvm/obfuscator" target="_blank" rel="external">https://github.com/obfuscator-llvm/obfuscator</a></p>
+<p>编译的时间是很漫长的，最后编译了几次之后，选择了放弃。</p>
+<p>之后遇到了一个大佬，说windows下也是可行的。</p>
+<p>然后我就开始了尝试<code>windows</code>之下编译 <code>obfuscator-llvm</code> 之旅</p>
+<p>找着找着就找到了 上海交大的 <a href="https://github.com/GoSSIP-SJTU/Armariris" target="_blank" rel="external">https://github.com/GoSSIP-SJTU/Armariris</a> 混淆模块。</p>
+<p>之后下载下来之后，按照官方的说明。使用</p>
+<pre><code>mkdir obf
+cd obf
+clone git@github.com:gossip-sjtu/Armariris.git
+cmake -DCMAKE_BUILD_TYPE:String=Release ./Armariris
+make -j4
+</code></pre><p>cmake 命令 的话 我这边安装了 vs2017 直接可以执行的。</p>
+<p>make -j4 的话 因为上一步之后目录下会生成 windows 程序的项目文件， 直接使用 Vs2017编译，编译的时间比较久。CPU、内存消耗也比较大。</p>
+<p>之后能够编译出 bin/目录 下面有许多exe文件，还有lib文件夹，里面包含许多的头文件</p>
+<p>然后 将bin文件夹内的 </p>
+<pre><code>clang++.exe
+clang.exe
+clang-format.exe
+</code></pre><p>替换  <code>sdk-path\ndk-bundle\toolchains\llvm\prebuilt\windows-x86_64\bin</code> 内的文件</p>
+<p>之后可以直接编译，会出现问题，就是 丢失头文件。</p>
+<p>报错说缺什么文件就补什么文件。</p>
+<p>我这边  <code>sdk\ndk-bundle\platforms\android-15\arch-x86\usr\include</code> 缺少了 <code>stddef.h</code>,<code>stdarg.h</code>两个文件。</p>
+<p>如果arm,mips也需要的话在相应的include文件夹内也要复制进去相对应的文件。</p>
+<p>缺少的文件可以去相对应编译的 <code>\build\Release\lib\clang\3.9.1\include</code> 目录之下寻找，只要导入即可。</p>
+<p>然后就能够编译成功了</p>
+<p>之后如果要使用的话，需要在app的 <code>build.gradle</code> 的 <code>cmake cppFlags</code> 中加入 功能</p>
+<p>编译时候添加选项开启字符串加密</p>
+<p><code>-mllvm -sobf</code><br>开启控制流扁平化</p>
+<p><code>-mllvm -fla</code><br>开启指令替换</p>
+<p><code>-mllvm -sub</code><br>指定随机数生成器种子</p>
+<p><code>-mllvm -seed=0xdeadbeaf</code></p>
+<p>这样就成功加好了OLLVM ，其中当前版本的 加密字符串可能会有一点小小问题，如果自己又对字符串进行一定的处理的话，会导致字符串的混乱（期待他们实验室的完善）。</p>
+<p>目前其实在反控制流平坦化方面也做的不错了 ，这个是基于x86情境下的<br><a href="https://github.com/SCUBSRGroup/OLLVM_Deobfuscation" target="_blank" rel="external">https://github.com/SCUBSRGroup/OLLVM_Deobfuscation</a></p>
+<p>还有freebuf上有文章<br><a href="http://www.freebuf.com/articles/terminal/130142.html" target="_blank" rel="external">http://www.freebuf.com/articles/terminal/130142.html</a></p>
+
+      
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/Android/">Android</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Native/">Native</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Obfuscator-llvm/">Obfuscator-llvm</a></li></ul>
+    </div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-xatu_write_up" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -686,73 +785,6 @@ if btn_flag == 1 :
       
         <p class="article-more-link">
           <a  href="/2017/03/25/[JarvisOJ]level3_x64/#more">查看全文 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-[JarvisOJ]level3" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/03/24/[JarvisOJ]level3/" class="article-date">
-      <time datetime="2017-03-24T14:49:00.000Z" itemprop="datePublished">2017-03-24</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/24/[JarvisOJ]level3/">JarvisOJ level3</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <p>这个题目虽然和前几个的结构差不多，但是减少了 system 和 /bin/sh ，而是给了一个libc.so 需要自己从里面找到地址</p>
-          
-      
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/Writeup/">Writeup</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Jarvis-oj/">Jarvis oj</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pwn/">pwn</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a  href="/2017/03/24/[JarvisOJ]level3/#more">查看全文 >></a>
         </p>
       
       <div class="clearfix"></div>
